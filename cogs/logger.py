@@ -19,7 +19,7 @@ class Logger(commands.Cog, name="Logger"):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         try:
-            before_id = before.author.id
+            before_id = int(before.author.id)
             before_content = before.content
             after_content = after.content
 
@@ -52,12 +52,12 @@ class Logger(commands.Cog, name="Logger"):
             if message.author.id == self.bot.user.id:
                 return
 
-            user = self.bot.get_user(message.author.id)
+            user = self.bot.get_user(int(message.author.id))
             embed: Embed = Embed(
                 title = f"A message was deleted in #{message.channel.name}!",
                 colour = Colour.purple()
             )
-            embed.add_field(name="Message by", value=f"{user.name}#{user.discriminator} <{message.author.id}>", inline=False)
+            embed.add_field(name="Message by", value=f"{user.name}#{user.discriminator} <{int(message.author.id)}>", inline=False)
             embed.add_field(name="Message", value=f"{message.content}", inline=False)
 
             await self.log_room.send(embed=embed)

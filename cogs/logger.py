@@ -23,7 +23,7 @@ class Logger(commands.Cog, name="Logger"):
             before_content = before.content
             after_content = after.content
 
-            user = self.bot.get_user(before_id)
+            user = before.author
 
             if before_id == self.bot.user.id or (before_content == after_content):
                 return
@@ -52,7 +52,7 @@ class Logger(commands.Cog, name="Logger"):
             if message.author.id == self.bot.user.id:
                 return
 
-            user = self.bot.get_user(int(message.author.id))
+            user = message.author
             embed: Embed = Embed(
                 title = f"A message was deleted in #{message.channel.name}!",
                 colour = Colour.purple()

@@ -63,3 +63,6 @@ class Logger(commands.Cog, name="Logger"):
             await self.log_room.send(embed=embed)
         except AttributeError as err:
             print(f"{err}")
+
+def setup(client):
+    client.add_cog(Logger(client))

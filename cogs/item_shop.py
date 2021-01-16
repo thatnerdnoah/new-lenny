@@ -75,3 +75,6 @@ class ItemShop(commands.Cog, name="ItemShop"):
         async for message in self.item_shop_channel.history(limit=100):
             if message.author.id == self.bot.user.id:
                 await message.delete()
+
+def setup(client):
+    client.add_cog(ItemShop(client))

@@ -1,7 +1,7 @@
 import traceback
 import discord
 
-from discord import Game, Streaming, Activity, ActivityType, Guild
+from discord import Game
 from discord.ext import commands
 
 from discord.ext.commands import Bot
@@ -12,7 +12,7 @@ bot = Bot(command_prefix=config.prefix)
 
 @bot.event
 async def on_ready():
-    await bot.change_presense(activity=Game(name="with my dino toys"))
+    await bot.change_presence(activity=Game(name="with my dino toys"))
     print(f"Logged in as {bot.user.name}!")
 
 

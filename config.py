@@ -8,5 +8,5 @@ prefix = "$"
 shop_channel = int(environ["FORTNITE_CHANNEL"])
 
 
-fortnite_store_url = 'https://api.fortnitetracker.com/v1/store'
-fortnite_header = {'TRN-Api-Key': f'{environ["FORTNITE_KEY"]}'}
+url = 'https://api.fortnitetracker.com/v1/store'
+headers = {'TRN-Api-Key': f'{environ["FORTNITE_KEY"]}'}

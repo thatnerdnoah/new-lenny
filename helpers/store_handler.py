@@ -65,6 +65,8 @@ def correct_rarities(item):
 		return "Dark Series"
 	elif item['rarity'] == "shadow":
 		return "Shadow Series"
+	elif item['rarity'] == 'icon series':
+		return "Icon Series"
 	else:
 		return item['rarity']
 

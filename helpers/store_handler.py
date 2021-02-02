@@ -100,7 +100,9 @@ def correct_names(name):
 # Correction for Zombie soccer skins
 def correct_price(item):
 	item_names = ["Set_03_AA", "Set_03_CA", "Set_03_BA", "Set_03_DA", "Set_03_HA", "Set_03_EA", "Set_03_GA", "Set_03_FA"]
-	if item['name'] in item_names:
+	if item["name"] == "Pulse":
+		return 1500
+	elif item['name'] in item_names:
 		return 1200
 	elif item['name'] == "Dragacorn" or item['name'] == "Ravenpool" or item['name'] == "Psylocke":
 		return 1500

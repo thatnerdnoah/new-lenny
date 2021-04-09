@@ -5,7 +5,7 @@ from discord.ext.commands import bot
 import config
 
 class Counting(commands.Cog, name="Counting"):
-    def __init__(self) -> None:
+    def __init__(self, bot) -> None:
         self.bot: commands.Bot = bot
         self.counting_channel : TextChannel = None
         self.counter = 0

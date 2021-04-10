@@ -58,6 +58,7 @@ class Counting(commands.Cog, name="Counting"):
                     else:
                         self.counter = 0
                         self.expected_number = 1
+                        self.last_messanger = None
                         await message.add_reaction("❌")
                         await message.channel.send(f"<@{message.author.id}> cant count!")
                 except Exception as error:

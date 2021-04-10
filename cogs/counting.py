@@ -22,7 +22,7 @@ class Counting(commands.Cog, name="Counting"):
         if ctx.invoked_command is None:
             await ctx.channel.send(f'<@{ctx.author.id}>: Please use a sub-command')
 
-    @commands.has_role(f"{config.admin_name}")
+    @commands.has_role(f"{config.admin_role}")
     @counting.command(name="setnumber", aliases=['set'])
     async def set_number(self, ctx, number_to_set):
         self.expected_number = number_to_set

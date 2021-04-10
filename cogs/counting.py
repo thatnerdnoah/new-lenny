@@ -32,7 +32,7 @@ class Counting(commands.Cog, name="Counting"):
                         self.counter = 0
                         self.expected_number = 1
                         await message.add_reaction("❌")
-                        await message.channel.send(f"<@{message.author.id}> cant count! :megasRage:")
+                        await message.channel.send(f"<@{message.author.id}> cant count!")
                 except Exception as error:
                     print(error)   
         else: 

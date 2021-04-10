@@ -1,6 +1,7 @@
 from os import environ
 
 token = environ["DISCORD_TOKEN"]
+admin_role = environ["MOD_ROLE"]
 mod_channel = int(environ["MOD_CHANNEL"])
 log_channel = int(environ["LOG_CHANNEL"])
 counting_channel = int(environ["COUNTING_CHANNEL"])

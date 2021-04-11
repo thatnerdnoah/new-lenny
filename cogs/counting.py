@@ -26,14 +26,14 @@ class Counting(commands.Cog, name="Counting"):
             self.counter = number_to_set - 1
             await ctx.message.add_reaction('✅')
 
-    @commands.Cog.listener()
-    async def on_message_edit(self, before):
-        if before.channel == self.counting_channel:
-            self.counter = 0
-            self.expected_number = 1
-            self.last_messanger = None
-            await before.add_reaction("❌")
-            await before.channel.send(f"<@{before.author.id}> edited their message, so the count resets!")
+    # @commands.Cog.listener()
+    # async def on_message_edit(self, before):
+    #     if before.channel == self.counting_channel:
+    #         self.counter = 0
+    #         self.expected_number = 1
+    #         self.last_messanger = None
+    #         await before.add_reaction("❌")
+    #         await before.channel.send(f"<@{before.author.id}> edited their message, so the count resets!")
 
     @commands.Cog.listener()
     async def on_message(self, message):

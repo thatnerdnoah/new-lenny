@@ -28,11 +28,12 @@ class Counting(commands.Cog, name="Counting"):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before):
-        self.counter = 0
-        self.expected_number = 1
-        self.last_messanger = None
-        await before.add_reaction("❌")
-        await before.channel.send(f"<@{before.author.id}> edited their message, so the count resets!")
+        if before.channel == self.counting_channel:
+            self.counter = 0
+            self.expected_number = 1
+            self.last_messanger = None
+            await before.add_reaction("❌")
+            await before.channel.send(f"<@{before.author.id}> edited their message, so the count resets!")
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -52,7 +53,7 @@ class Counting(commands.Cog, name="Counting"):
                         elif self.expected_number == 96:
                             await message.channel.send("not nice")
                         elif self.expected_number == 100:
-                            await message.channel.send(file=File("./media/100.gif"))
+                            await message.channel.send("file=File("./media/100.gif")")
                         elif self.expected_number == 137:
                             await message.channel.send("MAX LAFF POINTS!")
                         elif self.expected_number == 420:

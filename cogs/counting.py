@@ -1,4 +1,4 @@
-from discord import TextChannel, Embed
+from discord import TextChannel, File
 from discord.ext import commands, tasks
 from discord.ext.commands import bot, cooldown
 
@@ -20,14 +20,21 @@ class Counting(commands.Cog, name="Counting"):
 
     @commands.has_role(f"{config.admin_role}")
     @commands.command(name="setnumber", aliases=['set'])
-    async def set_number(self, ctx, number_to_set):
+    async def set_number(self, ctx, number_to_set: int):
         if ctx.channel == self.counting_channel:
             self.expected_number = number_to_set
             self.counter = number_to_set - 1
             await ctx.message.add_reaction('✅')
 
     @commands.Cog.listener()
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def on_message_edit(self, before):
+        self.counter = 0
+        self.expected_number = 1
+        self.last_messanger = None
+        await before.add_reaction("❌")
+        await before.channel.send(f"<@{before.author.id}> edited their message, so the count resets!")
+
+    @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel == self.counting_channel:
             if message.author == self.bot.user:
@@ -38,12 +45,16 @@ class Counting(commands.Cog, name="Counting"):
                 try:
                     message_number = int(message.content)
                     if message_number == self.expected_number:
-                        if self.expected_number == 69:
+                        if self.expected_number == 42:
+                            await message.channel.send("the meaning of life")
+                        elif self.expected_number == 69:
                             await message.channel.send("nice")
                         elif self.expected_number == 96:
                             await message.channel.send("not nice")
                         elif self.expected_number == 100:
-                            await message.channel.send("you gay")
+                            await message.channel.send(file=File("./media/100.gif"))
+                        elif self.expected_number == 137:
+                            await message.channel.send("MAX LAFF POINTS!")
                         elif self.expected_number == 420:
                             await message.channel.send("blaze it!")
                         self.last_messanger = message.author
@@ -61,8 +72,5 @@ class Counting(commands.Cog, name="Counting"):
         else: 
             return
             
-
-
-
 def setup(client):
     client.add_cog(Counting(client))

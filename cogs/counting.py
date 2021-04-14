@@ -1,6 +1,5 @@
-from discord import TextChannel, File
-from discord.ext import commands, tasks
-from discord.ext.commands import bot, cooldown
+from discord import TextChannel, File, Embed, Colour
+from discord.ext import commands
 
 import config
 
@@ -8,6 +7,7 @@ class Counting(commands.Cog, name="Counting"):
     def __init__(self, bot) -> None:
         self.bot: commands.Bot = bot
         self.counting_channel : TextChannel = None
+        self.log_channel : TextChannel = None
         self.last_messanger = None
         self.counter = 0
         self.expected_number = 1
@@ -15,8 +15,8 @@ class Counting(commands.Cog, name="Counting"):
     @commands.Cog.listener()
     async def on_ready(self):
         self.counting_channel = self.bot.get_channel(config.counting_channel)
+        self.log_channel = self.bot.get_channel(config.log_channel)
         print("Counting begins!")
-
 
     @commands.has_role(f"{config.admin_role}")
     @commands.command(name="setnumber", aliases=['set'])
@@ -25,15 +25,6 @@ class Counting(commands.Cog, name="Counting"):
             self.expected_number = number_to_set
             self.counter = number_to_set - 1
             await ctx.message.add_reaction('✅')
-
-    # @commands.Cog.listener()
-    # async def on_message_edit(self, before):
-    #     if before.channel == self.counting_channel:
-    #         self.counter = 0
-    #         self.expected_number = 1
-    #         self.last_messanger = None
-    #         await before.add_reaction("❌")
-    #         await before.channel.send(f"<@{before.author.id}> edited their message, so the count resets!")
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -65,12 +56,23 @@ class Counting(commands.Cog, name="Counting"):
                         self.expected_number += 1
                         await message.add_reaction("✅")
                     else:
+                        
                         self.counter = 0
                         self.expected_number = 1
                         self.last_messanger = None
                         await message.add_reaction("❌")
                         await message.channel.send(f"<@{message.author.id}> cant count!")
-                except Exception as error:
+                        embed = Embed(
+                            title="The counting stopped!",
+                            type='rich',
+                            colour=Colour.purple()
+                        )
+                        embed.add_field(name="Expected number", value=self.expected_number, inline=True)
+                        embed.add_field(name="Number typed in", value=message_number, inline=True)
+                        embed.add_field(name="Counter number", value=self.counter, inline=True)
+
+                        await self.log_channel.send(embed=embed)
+                except Exception:
                     return   
         else: 
             return

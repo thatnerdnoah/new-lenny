@@ -56,22 +56,22 @@ class Counting(commands.Cog, name="Counting"):
                         self.expected_number += 1
                         await message.add_reaction("✅")
                     else:
+                        embed = Embed(
+                            title="The counting stopped!",
+                            type='rich',
+                            colour=Colour.purple()
+                        )
+                        embed.add_field(name="Expected number", value=self.expected_number, inline=False)
+                        embed.add_field(name="Number typed in", value=message_number, inline=False)
+                        embed.add_field(name="Counter number", value=self.counter, inline=False)
+
+                        await self.log_channel.send(embed=embed)
                         
                         self.counter = 0
                         self.expected_number = 1
                         self.last_messanger = None
                         await message.add_reaction("❌")
                         await message.channel.send(f"<@{message.author.id}> cant count!")
-                        embed = Embed(
-                            title="The counting stopped!",
-                            type='rich',
-                            colour=Colour.purple()
-                        )
-                        embed.add_field(name="Expected number", value=self.expected_number, inline=True)
-                        embed.add_field(name="Number typed in", value=message_number, inline=True)
-                        embed.add_field(name="Counter number", value=self.counter, inline=True)
-
-                        await self.log_channel.send(embed=embed)
                 except Exception:
                     return   
         else: 

@@ -29,7 +29,7 @@ class Counting(commands.Cog, name="Counting"):
     @commands.has_role(f"{config.admin_role}")
     @commands.command(name="enablegc", aliases=['gc'])
     async def enable_garbage_collector(self, ctx):
-        self.collect = not self.gc.collect
+        self.collect = not self.collect
         await ctx.message.add_reaction('✅')
         await ctx.send(f"Garbadge collector is set to {self.collect}")
 

@@ -22,9 +22,8 @@ class Counting(commands.Cog, name="Counting"):
     @commands.has_role(f"{config.admin_role}")
     @commands.command(name="setnumber", aliases=['set'])
     async def set_number(self, ctx, number_to_set: int):
-        if ctx.channel == self.counting_channel:
-            self.expected_number = number_to_set
-            await ctx.message.add_reaction('✅')
+        self.expected_number = number_to_set
+        await ctx.message.add_reaction('✅')
 
     @commands.has_role(f"{config.admin_role}")
     @commands.command(name="enablegc", aliases=['gc'])
@@ -36,18 +35,17 @@ class Counting(commands.Cog, name="Counting"):
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel == self.counting_channel:
-            if message.author == self.bot.user:
-                return
-            else:
+            if message.author != self.bot.user:
                 if message.author == self.last_messanger:
                     return
                 try:
                     message_number = int(message.content)
                     if message_number == self.expected_number:
+                        self.last_messanger = message.author                        
                         if self.expected_number == 10:
                             await message.channel.send("woah 10 bits!")
                         elif self.expected_number == 24:
-                            await message.channel.send("nice", file=File("./media/24.gif"))
+                            await message.channel.send(file=File("./media/24.gif"))
                         elif self.expected_number == 42:
                             await message.channel.send("the meaning of life")
                         elif self.expected_number == 69:

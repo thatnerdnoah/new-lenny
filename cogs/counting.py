@@ -25,13 +25,6 @@ class Counting(commands.Cog, name="Counting"):
         self.expected_number = number_to_set
         await ctx.message.add_reaction('✅')
 
-    @commands.has_role(f"{config.admin_role}")
-    @commands.command(name="enablegc", aliases=['gc'])
-    async def enable_garbage_collector(self, ctx):
-        self.collect = not self.collect
-        await ctx.message.add_reaction('✅')
-        await ctx.send(f"Garbadge collector is set to {self.collect}")
-
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel == self.counting_channel:
@@ -70,10 +63,6 @@ class Counting(commands.Cog, name="Counting"):
                         embed.add_field(name="Number typed in", value=message_number, inline=False)
                         await self.log_channel.send(embed=embed)
                         
-                        if self.collect:
-                            del self.expected_number
-                            gc.collect()
-
                         self.expected_number = 1
                         self.last_messanger = None
                         await message.add_reaction("❌")

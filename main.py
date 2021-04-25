@@ -4,7 +4,7 @@ from discord import Game
 
 from discord.ext.commands import Bot
 
-import config
+import config_local as config
 
 bot = Bot(command_prefix=config.prefix)
 

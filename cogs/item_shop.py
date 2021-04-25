@@ -3,7 +3,7 @@ import time
 from discord import TextChannel, Embed
 from discord.ext import commands, tasks
 
-import config
+import config_local as config
 from helpers import web_request as web
 from helpers import store_handler as SH
 

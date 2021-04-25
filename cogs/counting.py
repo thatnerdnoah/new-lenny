@@ -29,7 +29,7 @@ class Counting(commands.Cog, name="Counting"):
         self.counting_channel = self.bot.get_channel(config.counting_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
 
-        self.expected_number = get_expected_number()
+        # self.expected_number = get_expected_number()
         if self.expected_number == None or self.expected_number == 0:
             self.expected_number = 1
 

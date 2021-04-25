@@ -55,7 +55,8 @@ class Counting(commands.Cog, name="Counting"):
                     return
                 try:
                     message_number = int(message.content)
-                    if message_number == self.expected_number:                       
+                    if message_number == self.expected_number:
+                        self.last_messanger = message.author                       
                         if self.expected_number == 10:
                             await message.channel.send("woah 10 bits!")
                         elif self.expected_number == 24:

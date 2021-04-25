@@ -7,12 +7,12 @@ from firebase_admin import firestore
 
 import config
 
-cred = credentials.ApplicationDefault()
-firebase_admin.initialize_app(cred, {
-    'projectId' : config.project_id
-})
+# cred = credentials.ApplicationDefault()
+# firebase_admin.initialize_app(cred, {
+#     'projectId' : config.project_id
+# })
 
-db = firestore.client()
+# db = firestore.client()
 
 class Counting(commands.Cog, name="Counting"):
     def __init__(self, bot) -> None:
@@ -44,7 +44,7 @@ class Counting(commands.Cog, name="Counting"):
     @commands.Cog.listener()
     async def on_message(self, message):
         
-        expected_number_db = db.collection(u'counting').document(u'count')
+        # expected_number_db = db.collection(u'counting').document(u'count')
 
         if message.channel == self.counting_channel:
             if message.author != self.bot.user:
@@ -71,7 +71,7 @@ class Counting(commands.Cog, name="Counting"):
                         elif self.expected_number == 420:
                             await message.channel.send("blaze it!")
                         self.expected_number += 1
-                        expected_number_db.update({u'count': self.expected_number})
+                        # expected_number_db.update({u'count': self.expected_number})
                         await message.add_reaction("✅")
                     else:
                         embed = Embed(
@@ -84,7 +84,7 @@ class Counting(commands.Cog, name="Counting"):
                         await self.log_channel.send(embed=embed)
                         
                         self.expected_number = 1
-                        expected_number_db.update({u'count': self.expected_number})
+                        # expected_number_db.update({u'count': self.expected_number})
                         self.last_messanger = None
                         await message.add_reaction("❌")
                         await message.channel.send(f"<@{message.author.id}> cant count!")
@@ -97,10 +97,10 @@ class Counting(commands.Cog, name="Counting"):
 def setup(client):
     client.add_cog(Counting(client))
 
-def get_expected_number():
-    doc_ref = db.collection(u'counting').document(u'count')
-    doc = doc_ref.get()
+# def get_expected_number():
+#     doc_ref = db.collection(u'counting').document(u'count')
+#     doc = doc_ref.get()
 
-    if doc.exists:
-        print(doc)
-        print(type(doc))
+#     if doc.exists:
+#         print(doc)
+#         print(type(doc))

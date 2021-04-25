@@ -8,6 +8,7 @@ counting_channel = int(environ["COUNTING_CHANNEL"])
 cogs = ["cogs.logger", "cogs.counting"]
 prefix = "$"
 shop_channel = int(environ["FORTNITE_CHANNEL"])
+project_id = environ["PROJECT_ID"]
 
 
 url = 'https://api.fortnitetracker.com/v1/store'

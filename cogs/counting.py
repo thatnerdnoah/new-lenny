@@ -7,7 +7,7 @@ from firebase_admin import firestore
 
 import config
 
-cred = credentials.Certificate(".\\helpers\\lennydb-94aae-firebase-adminsdk-lp085-af49ec526d.json")
+cred = credentials.Certificate("./helpers/lennydb-94aae-firebase-adminsdk-lp085-af49ec526d.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()

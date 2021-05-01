@@ -55,7 +55,8 @@ class Counting(commands.Cog, name="Counting"):
                     return
                 try:
                     message_number = int(message.content)
-                    if message_number == self.expected_number:
+                    expected_number = database_pull()
+                    if message_number == expected_number:
                         self.last_messanger = message.author                       
                         if self.expected_number == 10:
                             await message.channel.send("woah 10 bits!")
@@ -72,8 +73,8 @@ class Counting(commands.Cog, name="Counting"):
                         elif self.expected_number == 137:
                             await message.channel.send("MAX LAFF POINTS!")
                         elif self.expected_number == 420:
-                            await message.channel.send("blaze it!")
-                        self.expected_number += 1
+                            await message.channel.send("Blaze it!")
+                        self.expected_number = expected_number + 1
                         database_push(self.expected_number)
                         await message.add_reaction("✅")
                     else:

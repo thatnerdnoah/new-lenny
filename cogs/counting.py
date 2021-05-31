@@ -125,7 +125,7 @@ def database_pull():
     doc = doc_ref.get()
     if doc.exists:
         expected_number = doc.to_dict()['count']
-        record = doc.to_dict()['record']
+        record = doc.to_dict()['reward']
 
     return expected_number, record
 

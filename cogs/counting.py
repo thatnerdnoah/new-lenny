@@ -28,17 +28,15 @@ class Counting(commands.Cog, name="Counting"):
         self.counting_channel = self.bot.get_channel(config.counting_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
 
-        print("Before database pull", self.expected_number)
+        print("Before database pull:", self.expected_number, self.record)
         
         db_number, record_number = database_pull()
 
         if db_number != 0:
             self.expected_number = db_number
             self.record = record_number
-        else:
-            self.expected_number = 1
 
-        print("After database pull", self.expected_number)
+        print("After database pull:", self.expected_number, self.record)
         print("Counting begins!")
 
     @commands.has_role(f"{config.admin_role}")

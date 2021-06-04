@@ -96,8 +96,9 @@ class Counting(commands.Cog, name="Counting"):
                         await self.log_channel.send(embed=embed)
                         
                         # set the record
-                        self.record = self.expected_number
-                        update_record(self.record)
+                        if self.expected_number > self.record:
+                            self.record = self.expected_number
+                            update_record(self.record)
 
                         # reset the counter
                         self.expected_number = 1

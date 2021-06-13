@@ -52,7 +52,7 @@ class Counting(commands.Cog, name="Counting"):
         if message.channel == self.counting_channel:
             if message.author != self.bot.user:
                 if message.author == self.last_messanger:
-                    return
+                    await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
                 try:
                     message_number = int(message.content)
                     if message_number == self.expected_number:
@@ -60,8 +60,6 @@ class Counting(commands.Cog, name="Counting"):
 
                         if self.expected_number == 10:
                             await message.channel.send("woah 10 bits!")
-                        elif self.expected_number == 24:
-                            await message.channel.send(file=File("./media/24.gif"))
                         elif self.expected_number == 25:
                             await message.channel.send(file=File("./media/25.gif"))
                         elif self.expected_number == 42:
@@ -76,6 +74,8 @@ class Counting(commands.Cog, name="Counting"):
                             await message.channel.send("MAX LAFF POINTS!")
                         elif self.expected_number == 321:
                             await message.channel.send(file=File("./media/321.gif"))
+                        elif self.expected_number == 404:
+                            await message.channel.send("Error: not found", file=File("./media/404.gif"))
                         elif self.expected_number == 420:
                             await message.channel.send("Blaze it!")
                         elif self.expected_number == self.record + 1:

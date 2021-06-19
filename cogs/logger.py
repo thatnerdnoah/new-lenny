@@ -3,7 +3,6 @@ from discord import TextChannel, Embed, Colour
 from discord.ext import commands
 
 import config
-# import re, json, os
 
 class Logger(commands.Cog, name="Logger"):
     def __init__(self, bot) -> None:

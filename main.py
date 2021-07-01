@@ -4,8 +4,11 @@ from discord import Game
 
 from discord.ext.commands import Bot
 
-import config
-
+try:
+    import config_local as config
+except ImportError:
+    import config
+    
 bot = Bot(command_prefix=config.prefix)
 
 @bot.event

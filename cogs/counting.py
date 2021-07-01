@@ -1,3 +1,4 @@
+from threading import local
 from discord import TextChannel, File, Embed, Colour
 from discord.ext import commands
 
@@ -5,7 +6,14 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-import config
+local_test = False
+
+try:
+    import config_local as config
+    local_test = True
+except ImportError:
+    import config
+
 import random as rand
 
 cred = credentials.Certificate("./helpers/lennydb-94aae-firebase-adminsdk-lp085-af49ec526d.json")
@@ -43,6 +51,7 @@ class Counting(commands.Cog, name="Counting"):
     @commands.has_role(f"{config.admin_role}")
     @commands.command(name="setnumber", aliases=['set'])
     async def set_number(self, ctx, number_to_set: int):
+        print("Command sent to set current number to", number_to_set)
         self.expected_number = number_to_set
         database_push(self.expected_number)
         await ctx.message.add_reaction('✅')
@@ -55,7 +64,7 @@ class Counting(commands.Cog, name="Counting"):
                     message_number = int(message.content)
                     if message_number == self.expected_number:
 
-                        if message.author == self.last_messanger:
+                        if message.author == self.last_messanger and not local_test:
                             await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
                             return
                         else:

@@ -2,7 +2,10 @@ from typing import Text
 from discord import TextChannel, Embed, Colour
 from discord.ext import commands
 
-import config
+try:
+    import config_local as config
+except ImportError:
+    import config
 
 class Logger(commands.Cog, name="Logger"):
     def __init__(self, bot) -> None:

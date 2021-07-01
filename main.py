@@ -10,7 +10,7 @@ bot = Bot(command_prefix=config.prefix)
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=Game(name="with my dino toys"))
+    await bot.change_presence(activity=Game(name="Escaping Meteor Simulator"))
     print(f"Logged in as {bot.user.name}!")
 
 

@@ -54,7 +54,7 @@ class Counting(commands.Cog, name="Counting"):
         print("Command sent to set current number to", number_to_set)
         self.expected_number = number_to_set
         database_push(self.expected_number)
-        await ctx.message.add_reaction('\U0001F382')
+        await ctx.message.add_reaction('✅')
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -100,7 +100,7 @@ class Counting(commands.Cog, name="Counting"):
                             
                             self.expected_number += 1
                             database_push(self.expected_number)
-                            await message.add_reaction("✅")
+                            await message.add_reaction("🎂")
                     else:
                         # Embed log
                         embed = Embed(

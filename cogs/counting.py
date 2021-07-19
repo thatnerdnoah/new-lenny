@@ -63,8 +63,8 @@ class Counting(commands.Cog, name="Counting"):
                 try:
                     message_number = int(message.content)
                     if message_number == self.expected_number:
-
                         if message.author == self.last_messanger and not local_test:
+                            await message.add_reaction("❌")
                             await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
                             return
                         else:
@@ -100,7 +100,7 @@ class Counting(commands.Cog, name="Counting"):
                             
                             self.expected_number += 1
                             database_push(self.expected_number)
-                            await message.add_reaction("🎂")
+                            await message.add_reaction("✅")
                     else:
                         # Embed log
                         embed = Embed(

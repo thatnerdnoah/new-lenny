@@ -69,7 +69,9 @@ class Counting(commands.Cog, name="Counting"):
                             return
                         else:
                             self.last_messanger = message.author
-                            if self.expected_number == 10:
+                            if self.expected_number == 1:
+                                await message.channel.send(file=File("./media/1.jpg"))
+                            elif self.expected_number == 10:
                                 ben_tits = rand.randint(0,1)
                                 if ben_tits == 0:
                                     await message.channel.send("woah 10 bits!")

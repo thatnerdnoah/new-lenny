@@ -114,7 +114,7 @@ class Counting(commands.Cog, name="Counting"):
                             
                             self.expected_number += 1
                             database_push(self.expected_number)
-                            # await message.add_reaction("✅")
+                            await message.add_reaction("✅")
                             await ctx.message.add_reaction('🎄')
 
                     else:

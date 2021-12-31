@@ -24,14 +24,14 @@ class Warning(commands.Cog, name="Moderation"):
     @commands.command(name="warn", aliases=['w'])
     async def warning(self, ctx, user_id: int):
         """Warns the user of their actions and grants the user strikes. The reason must be in quotation marks."""
-        channel = message.channel
+        channel = ctx.channel
 
         await ctx.channel.send("Please state the reason for the warning in your next message.")
 
         def check(m):
             return m.channel == channel
 
-        reason: str = await bot.wait_for("message", check=check)
+        reason: str = await self.bot.wait_for("message", check=check)
         
         user = self.bot.get_user(user_id)
         await user.send(

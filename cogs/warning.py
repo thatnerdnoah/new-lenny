@@ -29,7 +29,7 @@ class Warning(commands.Cog, name="Moderation"):
         await ctx.channel.send("Please state the reason for the warning in your next message.")
 
         def check(m):
-            return m.channel = channel
+            return m.channel == channel
 
         reason: str = await bot.wait_for("message", check=check)
         

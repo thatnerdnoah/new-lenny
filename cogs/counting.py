@@ -54,8 +54,7 @@ class Counting(commands.Cog, name="Counting"):
         print("Command sent to set current number to", number_to_set)
         self.expected_number = number_to_set
         database_push(self.expected_number)
-        # await ctx.message.add_reaction('✅')
-        await ctx.message.add_reaction('🎄')
+        await ctx.message.add_reaction('✅')
 
 
     @commands.Cog.listener()
@@ -81,6 +80,8 @@ class Counting(commands.Cog, name="Counting"):
                                     await message.channel.send("woah ben tits!")
                                 else:
                                     await message.channel.send("woah 10 bits!")
+                            elif self.expected_number == 21:
+                                await message.channel.send(file=File("./media/21.gif"))
                             elif self.expected_number == 25:
                                 await message.channel.send(file=File("./media/25.gif"))
                             elif self.expected_number == 42:
@@ -115,7 +116,6 @@ class Counting(commands.Cog, name="Counting"):
                             self.expected_number += 1
                             database_push(self.expected_number)
                             await message.add_reaction("✅")
-                            await ctx.message.add_reaction('🎄')
 
                     else:
                         # Embed log

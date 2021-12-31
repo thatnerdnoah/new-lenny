@@ -5,10 +5,11 @@ admin_role = environ["MOD_ROLE"]
 mod_channel = int(environ["MOD_CHANNEL"])
 log_channel = int(environ["LOG_CHANNEL"])
 counting_channel = int(environ["COUNTING_CHANNEL"])
-cogs = ["cogs.logger", "cogs.counting"]
+cogs = ["cogs.logger", "cogs.counting", "cogs.warning"]
 prefix = "$"
 shop_channel = int(environ["FORTNITE_CHANNEL"])
 project_id = environ["PROJECT_ID"]
+discord_name = "The Snoop Troop"
 
 
 url = 'https://api.fortnitetracker.com/v1/store'

@@ -10,7 +10,7 @@ prefix = "$"
 shop_channel = int(environ["FORTNITE_CHANNEL"])
 project_id = environ["PROJECT_ID"]
 discord_name = "The Snoop Troop"
-
+local_test = False
 
 url = 'https://api.fortnitetracker.com/v1/store'
 headers = {'TRN-Api-Key': f'{environ["FORTNITE_KEY"]}'}

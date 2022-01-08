@@ -80,36 +80,36 @@ class Counting(commands.Cog, name="Counting"):
                                     await message.channel.send("woah ben tits!")
                                 else:
                                     await message.channel.send("woah 10 bits!")
-                            elif self.expected_number == 21:
-                                await message.channel.send(file=File("./media/21.gif"))
-                            elif self.expected_number == 25:
-                                await message.channel.send(file=File("./media/25.gif"))
-                            elif self.expected_number == 42:
-                                await message.channel.send("the meaning of life")
-                            elif self.expected_number == 51:
-                                aliens = rand.randint(0,1)
-                                if aliens == 0:
-                                    await message.channel.send(file=File("./media/51.gif"))
-                                elif aliens == 1:
-                                    await message.channel.send(file=File("./media/51.jpg"))
-                                else:
-                                    await message.channel.send("woah 10 bits!")
-                            elif self.expected_number == 69:
-                                await message.channel.send("nice", file=File("./media/69.png"))
-                            elif self.expected_number == 96:
-                                await message.channel.send("not nice")
-                            elif self.expected_number == 100:
-                                await message.channel.send(file=File("./media/100.gif"))
-                            elif self.expected_number == 137:
-                                await message.channel.send("MAX LAFF POI... wait")
-                            elif self.expected_number == 140:
-                                await message.channel.send("MAX LAFF POINTS!")
-                            elif self.expected_number == 321:
-                                await message.channel.send(file=File("./media/321.gif"))
-                            elif self.expected_number == 404:
-                                await message.channel.send("Error: not found", file=File("./media/404.gif"))
-                            elif self.expected_number == 420:
-                                await message.channel.send("BLAZE IT!", file=File("./media/420.gif"))
+                            # elif self.expected_number == 21:
+                            #     await message.channel.send(file=File("./media/21.gif"))
+                            # elif self.expected_number == 25:
+                            #     await message.channel.send(file=File("./media/25.gif"))
+                            # elif self.expected_number == 42:
+                            #     await message.channel.send("the meaning of life")
+                            # elif self.expected_number == 51:
+                            #     aliens = rand.randint(0,1)
+                            #     if aliens == 0:
+                            #         await message.channel.send(file=File("./media/51.gif"))
+                            #     elif aliens == 1:
+                            #         await message.channel.send(file=File("./media/51.jpg"))
+                            #     else:
+                            #         await message.channel.send("woah 10 bits!")
+                            # elif self.expected_number == 69:
+                            #     await message.channel.send("nice", file=File("./media/69.png"))
+                            # elif self.expected_number == 96:
+                            #     await message.channel.send("not nice")
+                            # elif self.expected_number == 100:
+                            #     await message.channel.send(file=File("./media/100.gif"))
+                            # elif self.expected_number == 137:
+                            #     await message.channel.send("MAX LAFF POI... wait")
+                            # elif self.expected_number == 140:
+                            #     await message.channel.send("MAX LAFF POINTS!")
+                            # elif self.expected_number == 321:
+                            #     await message.channel.send(file=File("./media/321.gif"))
+                            # elif self.expected_number == 404:
+                            #     await message.channel.send("Error: not found", file=File("./media/404.gif"))
+                            # elif self.expected_number == 420:
+                            #     await message.channel.send("BLAZE IT!", file=File("./media/420.gif"))
                             elif self.expected_number == self.record + 1:
                                 await message.channel.send("You broke the record!")
                             

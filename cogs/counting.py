@@ -152,7 +152,11 @@ def database_pull():
     expected_number : int = 0
     record : int = 0
 
-    doc_ref = db.collection(u'counting').document(u'count')
+    if not config.local_test:
+        doc_ref = db.collection(u'counting').document(u'count')
+    else:
+        doc_ref = db.collection(u'counting').document(u'count_test')
+        
 
     doc = doc_ref.get()
     if doc.exists:
@@ -162,13 +166,21 @@ def database_pull():
     return expected_number, record
 
 def update_record(num: int):
-    counter_ref = db.collection(u'counting').document(u'count')
+    if not config.local_test:
+        counter_ref = db.collection(u'counting').document(u'count')
+    else:
+        counter_ref = db.collection(u'counting').document(u'count_test')
+
     counter_ref.update({
         u'reward': num
     })
 
 def database_push(num: int):
-    counter_ref = db.collection(u'counting').document(u'count')
+    if not config.local_test:
+        counter_ref = db.collection(u'counting').document(u'count')
+    else:
+        counter_ref = db.collection(u'counting').document(u'count_test')
+
     counter_ref.update({
         u'count': num
     })

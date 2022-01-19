@@ -63,60 +63,60 @@ class Counting(commands.Cog, name="Counting"):
             if message.author != self.bot.user:
                 try:
                     message_number = int(message.content)
-                    if message_number == self.expected_number:
-                        if message.author == self.last_messanger and not local_test:
+
+                    if message.author == self.last_messanger and not local_test:
                             await message.add_reaction("❌")
                             await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
                             return
-                        else:
-                            self.last_messanger = message.author
-                            # if self.expected_number == 1:
-                            #     await message.channel.send(file=File("./media/1.jpg"))
-                            # elif self.expected_number == 10:
-                            #     ben_tits = rand.randint(0,1)
-                            #     if ben_tits == 0:
-                            #         await message.channel.send("woah 10 bits!")
-                            #     elif ben_tits == 1:
-                            #         await message.channel.send("woah ben tits!")
-                            #     else:
-                            #         await message.channel.send("woah 10 bits!")
-                            # elif self.expected_number == 21:
-                            #     await message.channel.send(file=File("./media/21.gif"))
-                            # elif self.expected_number == 25:
-                            #     await message.channel.send(file=File("./media/25.gif"))
-                            # elif self.expected_number == 42:
-                            #     await message.channel.send("the meaning of life")
-                            # elif self.expected_number == 51:
-                            #     aliens = rand.randint(0,1)
-                            #     if aliens == 0:
-                            #         await message.channel.send(file=File("./media/51.gif"))
-                            #     elif aliens == 1:
-                            #         await message.channel.send(file=File("./media/51.jpg"))
-                            #     else:
-                            #         await message.channel.send("woah 10 bits!")
-                            # elif self.expected_number == 69:
-                            #     await message.channel.send("nice", file=File("./media/69.png"))
-                            # elif self.expected_number == 96:
-                            #     await message.channel.send("not nice")
-                            # elif self.expected_number == 100:
-                            #     await message.channel.send(file=File("./media/100.gif"))
-                            # elif self.expected_number == 137:
-                            #     await message.channel.send("MAX LAFF POI... wait")
-                            # elif self.expected_number == 140:
-                            #     await message.channel.send("MAX LAFF POINTS!")
-                            # elif self.expected_number == 321:
-                            #     await message.channel.send(file=File("./media/321.gif"))
-                            # elif self.expected_number == 404:
-                            #     await message.channel.send("Error: not found", file=File("./media/404.gif"))
-                            # elif self.expected_number == 420:
-                            #     await message.channel.send("BLAZE IT!", file=File("./media/420.gif"))
-                            if self.expected_number == self.record + 1:
-                                await message.channel.send("You broke the record!")
-                            
-                            self.expected_number += 1
-                            database_push(self.expected_number)
-                            await message.add_reaction("✅")
 
+                    if message_number == self.expected_number: 
+                        self.last_messanger = message.author
+                        if self.expected_number == 1:
+                            await message.channel.send(file=File("./media/1.jpg"))
+                        elif self.expected_number == 10:
+                            ben_tits = rand.randint(0,1)
+                            if ben_tits == 0:
+                                await message.channel.send("woah 10 bits!")
+                            elif ben_tits == 1:
+                                await message.channel.send("woah ben tits!")
+                            else:
+                                await message.channel.send("woah 10 bits!")
+                        elif self.expected_number == 21:
+                            await message.channel.send(file=File("./media/21.gif"))
+                        elif self.expected_number == 25:
+                            await message.channel.send(file=File("./media/25.gif"))
+                        elif self.expected_number == 42:
+                            await message.channel.send("the meaning of life")
+                        elif self.expected_number == 51:
+                            aliens = rand.randint(0,1)
+                            if aliens == 0:
+                                await message.channel.send(file=File("./media/51.gif"))
+                            elif aliens == 1:
+                                await message.channel.send(file=File("./media/51.jpg"))
+                            else:
+                                await message.channel.send("woah 10 bits!")
+                        elif self.expected_number == 69:
+                            await message.channel.send("nice", file=File("./media/69.png"))
+                        elif self.expected_number == 96:
+                            await message.channel.send("not nice")
+                        elif self.expected_number == 100:
+                            await message.channel.send(file=File("./media/100.gif"))
+                        elif self.expected_number == 137:
+                            await message.channel.send("MAX LAFF POI... wait")
+                        elif self.expected_number == 140:
+                            await message.channel.send("MAX LAFF POINTS!")
+                        elif self.expected_number == 321:
+                            await message.channel.send(file=File("./media/321.gif"))
+                        elif self.expected_number == 404:
+                            await message.channel.send("Error: not found", file=File("./media/404.gif"))
+                        elif self.expected_number == 420:
+                            await message.channel.send("BLAZE IT!", file=File("./media/420.gif"))
+                        if self.expected_number == self.record + 1:
+                            await message.channel.send("You broke the record!")
+                        
+                        self.expected_number += 1
+                        database_push(self.expected_number)
+                        await message.add_reaction("✅")
                     else:
                         # Embed log
                         embed = Embed(

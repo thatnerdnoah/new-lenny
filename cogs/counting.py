@@ -101,12 +101,20 @@ class Counting(commands.Cog, name="Counting"):
                             await message.channel.send("not nice")
                         elif self.expected_number == 100:
                             await message.channel.send(file=File("./media/100.gif"))
+                        elif self.expected_number == 111:
+                            await message.channel.send(file=File("./media/111.gif"))
                         elif self.expected_number == 137:
                             await message.channel.send("MAX LAFF POI... wait")
                         elif self.expected_number == 140:
                             await message.channel.send("MAX LAFF POINTS!")
+                        elif self.expected_number == 222:
+                            await message.channel.send(file=File("./media/222.gif"))
+                        elif self.expected_number == 314:
+                            await message.channel.send(file=File("./media/314.gif"))
                         elif self.expected_number == 321:
                             await message.channel.send(file=File("./media/321.gif"))
+                        elif self.expected_number == 333:
+                            await message.channel.send(file=File("./media/333.gif"))
                         elif self.expected_number == 404:
                             await message.channel.send("Error: not found", file=File("./media/404.gif"))
                         elif self.expected_number == 420:

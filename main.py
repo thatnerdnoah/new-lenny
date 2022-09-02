@@ -23,7 +23,7 @@ async def on_ready():
 async def main():
     for cog in config.cogs:
         try:
-            await bot.load_extension(cog)
+            await bot.add_cog(cog)
             print(f"Loaded extension {cog}")
         except Exception as error:
             print(f"Cog {cog} could not be loaded. Reason: {error}")

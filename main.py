@@ -1,6 +1,6 @@
 import traceback
 
-from discord import Game
+from discord import Game, Intents
 
 from discord.ext.commands import Bot
 
@@ -8,8 +8,11 @@ try:
     import config_local as config
 except ImportError:
     import config
+
+intents = Intents.default()
+intents.message_content = True
     
-bot = Bot(command_prefix=config.prefix)
+bot = Bot(command_prefix=config.prefix, intents=intents)
 
 @bot.event
 async def on_ready():

@@ -21,9 +21,9 @@ async def on_ready():
     print(f"Logged in as {bot.user.name}!")
 
 
-async def add_extensions():
-    await bot.load_extension("cogs.counting")
+async def main():
+    async with bot:
+        await bot.load_extension("cogs.counting")
+        await bot.start(config.token)
 
-
-asyncio.run(add_extensions())
-bot.run(config.token)
+asyncio.run(main())

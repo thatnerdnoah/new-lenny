@@ -1,4 +1,5 @@
 import traceback
+import asyncio
 
 from discord import Game, Intents
 
@@ -21,14 +22,8 @@ async def on_ready():
 
 
 async def add_extensions():
-    for cog in config.cogs:
-        try:
-            bot.load_extension(cog)
-            print(f"Loaded extension {cog}")
-        except Exception as error:
-            print(f"Cog {cog} could not be loaded. Reason: {error}")
-            traceback.print_exc()
+    await bot.load_extension("cogs.counting")
 
 
-add_extensions()
+asyncio.run(add_extensions())
 bot.run(config.token)

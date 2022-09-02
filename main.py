@@ -20,10 +20,10 @@ async def on_ready():
     print(f"Logged in as {bot.user.name}!")
 
 
-def main():
+async def main():
     for cog in config.cogs:
         try:
-            bot.load_extension(cog)
+            await bot.load_extension(cog)
             print(f"Loaded extension {cog}")
         except Exception as error:
             print(f"Cog {cog} could not be loaded. Reason: {error}")

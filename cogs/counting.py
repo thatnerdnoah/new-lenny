@@ -155,8 +155,8 @@ class Counting(commands.Cog, name="Counting"):
         else: 
             return
             
-def setup(client):
-    client.add_cog(Counting(client))
+async def setup(client):
+    await client.add_cog(Counting(client))
 
 def database_pull():
     expected_number : int = 0

@@ -30,8 +30,6 @@ class Counting(commands.Cog, name="Counting"):
         self.last_messanger = None
         self.expected_number = 1
         self.record = 0
-
-        self.tree.sync()
         
 
     @commands.Cog.listener()

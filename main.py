@@ -25,6 +25,7 @@ async def main():
     async with bot:
         await bot.load_extension("cogs.counting")
         await bot.start(config.token)
+        await bot.tree.sync()
 
 if __name__ == "__main__":
     asyncio.run(main())

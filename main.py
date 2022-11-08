@@ -14,7 +14,7 @@ intents = Intents.default()
 intents.message_content = True
     
 bot = Bot(command_prefix=config.prefix, intents=intents, application_id=config.bot_id)
-bot.tree.sync()
+# bot.tree.sync()
 
 @bot.event
 async def on_ready():
@@ -26,6 +26,7 @@ async def main():
     async with bot:
         await bot.load_extension("cogs.counting")
         await bot.start(config.token)
+        await bot.tree.sync()
 
 if __name__ == "__main__":
     asyncio.run(main())

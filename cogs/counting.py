@@ -1,5 +1,5 @@
 from threading import local
-from discord import TextChannel, File, Embed, Colour, app_commands
+from discord import TextChannel, File, Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 
 import firebase_admin
@@ -57,7 +57,7 @@ class Counting(commands.Cog, name="Counting"):
         await ctx.message.add_reaction('✅')
 
     @app_commands.command(name="setcount", description="Sets the count of the counting channel.")
-    async def set_number(self, interaction:discord.Interaction, number_to_set: int):
+    async def set_number(self, interaction:Interaction, number_to_set: int):
         user_permissions = interaction.user.guild_permissions
         if user_permissions.manage_channels:
             print("Command sent to set current number to", number_to_set)

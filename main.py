@@ -1,7 +1,7 @@
 import traceback
 import asyncio
 
-from discord import Game, Intents
+from discord import Game, Intents, Interaction
 
 from discord.ext.commands import Bot
 
@@ -24,8 +24,8 @@ async def on_ready():
 async def main():
     async with bot:
         await bot.load_extension("cogs.counting")
-        await bot.start(config.token)
         await bot.tree.sync()
+        await bot.start(config.token)
 
 if __name__ == "__main__":
     asyncio.run(main())

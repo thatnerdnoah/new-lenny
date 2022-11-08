@@ -76,6 +76,7 @@ class Counting(commands.Cog, name="Counting"):
                     if message.author == self.last_messanger and not local_test:
                             await message.add_reaction("❌")
                             await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
+                            await message.channel.send("Counting may continue!")
                             return
 
                     if message_number == self.expected_number: 

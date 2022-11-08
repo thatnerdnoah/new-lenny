@@ -30,6 +30,8 @@ class Counting(commands.Cog, name="Counting"):
         self.last_messanger = None
         self.expected_number = 1
         self.record = 0
+
+        self.tree.sync()
         
 
     @commands.Cog.listener()
@@ -56,7 +58,7 @@ class Counting(commands.Cog, name="Counting"):
         database_push(self.expected_number)
         await ctx.message.add_reaction('✅')
 
-    @bot.tree.command(name="setcount", description="Sets the count of the counting channel.")
+    @app_commands.command(name="setcount", description="Sets the count of the counting channel.")
     async def set_number(self, interaction:Interaction, number_to_set: int):
         user_permissions = interaction.user.guild_permissions
         if user_permissions.manage_channels:

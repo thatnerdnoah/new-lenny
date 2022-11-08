@@ -13,7 +13,7 @@ except ImportError:
 intents = Intents.default()
 intents.message_content = True
     
-bot = Bot(command_prefix=config.prefix, intents=intents)
+bot = Bot(command_prefix=config.prefix, intents=intents, application_id=config.bot_id)
 
 @bot.event
 async def on_ready():

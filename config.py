@@ -6,6 +6,7 @@ mod_channel = int(environ["MOD_CHANNEL"])
 log_channel = int(environ["LOG_CHANNEL"])
 counting_channel = int(environ["COUNTING_CHANNEL"])
 cogs = ["cogs.counting"]
+bot_id = 597109548104548390
 prefix = "$"
 shop_channel = int(environ["FORTNITE_CHANNEL"])
 project_id = environ["PROJECT_ID"]

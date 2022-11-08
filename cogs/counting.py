@@ -167,7 +167,7 @@ class Counting(commands.Cog, name="Counting"):
             
 async def setup(client):
     await client.add_cog(Counting(client))
-    await client.tree.sync()
+    # await client.tree.sync()
 
 def database_pull():
     expected_number : int = 0

@@ -30,7 +30,6 @@ class Counting(commands.Cog, name="Counting"):
         self.last_messanger = None
         self.expected_number = 1
         self.record = 0
-        super().__init__()
         
 
     @commands.Cog.listener()
@@ -168,7 +167,6 @@ class Counting(commands.Cog, name="Counting"):
             
 async def setup(client):
     await client.add_cog(Counting(client))
-    # await client.tree.sync()
 
 def database_pull():
     expected_number : int = 0

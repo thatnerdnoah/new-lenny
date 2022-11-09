@@ -26,7 +26,7 @@ async def on_ready():
 
 async def main():
     async with client:
-        await client.load_extension("cogs.counting")
+        await client.add_cog("cogs.counting")
         await client.run(config.token)
 
 asyncio.run(main())

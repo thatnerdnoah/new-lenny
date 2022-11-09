@@ -2,10 +2,11 @@ import asyncio
 import config
 import discord
 from discord import app_commands
+from discord.ext.commands import Bot
 
 MY_GUILD = discord.Object(id=0)
 
-class Lenny(discord.Client):
+class LennyStandard(discord.Client):
     def __init__(self, *, intents: discord.Intents) -> None:
         super().__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
@@ -13,6 +14,10 @@ class Lenny(discord.Client):
     async def setup_hook(self):
         self.tree.copy_global_to(guild=MY_GUILD)
         await self.tree.sync(guild=MY_GUILD)
+
+# class LennyExt(Bot):
+#     def __init__(self, *, intents: discord.Intents) -> None:
+#         super().__init__(command_prefix='/', intents=intents, application_id=config.bot_id)
 
 
 intents = discord.Intents.default()

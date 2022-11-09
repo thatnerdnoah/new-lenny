@@ -30,6 +30,7 @@ class Counting(commands.Cog, name="Counting"):
         self.last_messanger = None
         self.expected_number = 1
         self.record = 0
+        super().__init__()
         
 
     @commands.Cog.listener()

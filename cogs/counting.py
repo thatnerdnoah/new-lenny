@@ -75,7 +75,7 @@ class Counting(commands.Cog, name="Counting"):
                     if message.author == self.last_messanger and not local_test:
                             await message.add_reaction("❌")
                             await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
-                            await message.channel.send("Counting may continue!")
+                            await message.channel.send("Counting may continue at", message_number, "!")
                             return
 
                     if message_number == self.expected_number: 
@@ -106,8 +106,8 @@ class Counting(commands.Cog, name="Counting"):
                                 await message.channel.send("woah 10 bits!")
                         elif self.expected_number == 69:
                             await message.channel.send("nice", file=File("./media/69.png"))
-                        elif self.expected_number == 96:
-                            await message.channel.send("not nice")
+                        # elif self.expected_number == 96:
+                        #     await message.channel.send("not nice")
                         elif self.expected_number == 100:
                             await message.channel.send(file=File("./media/100.gif"))
                         elif self.expected_number == 111:

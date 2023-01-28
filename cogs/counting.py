@@ -48,7 +48,6 @@ class Counting(commands.Cog, name="Counting"):
         print("After database pull:", self.expected_number, self.record)
         print("Counting begins!")
 
-    @commands.has_role(f"{config.admin_role}")
     @commands.command(name="setnumber", aliases=['set'])
     async def set_number(self, ctx, number_to_set: int):
         print("Command sent to set current number to", number_to_set)

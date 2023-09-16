@@ -104,6 +104,8 @@ class Counting(commands.Cog, name="Counting"):
                                 await message.channel.send(file=File("./media/51.jpg"))
                             else:
                                 await message.channel.send("woah 10 bits!")
+                        elif self.expected_number == 66:
+                            await message.channel.send(file=File("./media/66.gif"))
                         elif self.expected_number == 69:
                             await message.channel.send("nice", file=File("./media/69.png"))
                         # elif self.expected_number == 96:
@@ -120,8 +122,8 @@ class Counting(commands.Cog, name="Counting"):
                             await message.channel.send(file=File("./media/222.gif"))
                         elif self.expected_number == 305:
                             await message.channel.send("Dale???? Idk who dale is")
-                        # elif self.expected_number == 314:
-                        #     await message.channel.send(file=File("./media/314.gif"))
+                        elif self.expected_number == 314:
+                            await message.channel.send(file=File("./media/314.gif"))
                         elif self.expected_number == 321:
                             await message.channel.send(file=File("./media/321.gif"))
                         elif self.expected_number == 333:

@@ -132,6 +132,7 @@ class Counting(commands.Cog, name="Counting"):
                             await message.channel.send("Error: not found", file=File("./media/404.gif"))
                         elif self.expected_number == 420:
                             await message.channel.send("BLAZE IT!", file=File("./media/420.gif"))
+                        
                         if self.expected_number == self.record + 1:
                             await message.channel.send("You broke the record!")
                         

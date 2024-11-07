@@ -114,8 +114,8 @@ class Counting(commands.Cog, name="Counting"):
                             await message.channel.send(file=File("./media/100.gif"))
                         elif self.expected_number == 111:
                             await message.channel.send(file=File("./media/111.gif"))
-                        elif self.expected_number == 137:
-                            await message.channel.send("MAX LAFF POI... wait")
+                        # elif self.expected_number == 137:
+                        #     await message.channel.send("MAX LAFF POI... wait")
                         elif self.expected_number == 140:
                             await message.channel.send("MAX LAFF POINTS!")
                         elif self.expected_number == 222:

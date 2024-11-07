@@ -10,6 +10,7 @@ bot_id = 597109548104548390
 prefix = "$"
 project_id = environ["PROJECT_ID"]
 discord_name = "Snoop Troop"
+local_test = False
 
 # url = 'https://api.fortnitetracker.com/v1/store'
 # headers = {'TRN-Api-Key': f'{environ["FORTNITE_KEY"]}'}

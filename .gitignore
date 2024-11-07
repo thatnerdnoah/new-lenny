@@ -1,3 +1,4 @@
 config_local.py
 __pycache__
 cogs/alphabet.py
+helpers/*.json

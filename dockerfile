@@ -13,11 +13,11 @@ WORKDIR /app
 
 # Clone the GitHub repository
 # Replace "<github-repo-url>" with your GitHub repository URL
-RUN git clone <github-repo-url> .
+RUN git clone https://github.com/thatnerdnoah/new-lenny.git .
 
 # Copy the necessary file into the specified directory
 # Replace "source/file/path" with your local file path, and "/app/target/directory" with the target path in the container
-COPY source/file/path /app/target/directory
+COPY /app/new-lenny /app
 
 # Install project dependencies
 RUN pip3 install -r requirements.txt

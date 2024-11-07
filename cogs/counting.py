@@ -15,7 +15,7 @@ except ImportError:
 
 import random as rand
 
-cred = credentials.Certificate("./helpers/lennydb-94aae-firebase-adminsdk-lp085-af49ec526d.json")
+cred = credentials.Certificate("./helpers/lennydb-94aae-firebase-adminsdk-lp085-97c73bc2f2.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()

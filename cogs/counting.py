@@ -54,15 +54,17 @@ class Counting(commands.Cog, name="Counting"):
         database_push(self.expected_number)
         await ctx.message.add_reaction('✅')
 
-    @app_commands.command(name="setcount", description="Sets the count of the counting channel.")
-    async def set_number_alt(self, interaction:Interaction, number_to_set: int):
-        user_permissions = interaction.user.guild_permissions
-        if user_permissions.manage_channels:
-            print("Command sent to set current number to", number_to_set)
-            self.expected_number = number_to_set
-            database_push(self.expected_number)
-            await interaction.response.send_message(f"Counting has been set to {number_to_set}", ephermeral=True)
-
+   @commands.command(name="restore")
+   async def restore_number(self, ctx):
+        try:
+            print("Count will be restored")
+            backup_numnber = pull_backup()
+            if backup_numnber == 0:
+                raise ValueError("The number must be greater than 0.")
+            
+            self.expected_number = backup_numnber
+        except ValueError as e:
+            print(f"Error: {e}")        
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -74,7 +76,7 @@ class Counting(commands.Cog, name="Counting"):
                     if message.author == self.last_messanger and not local_test:
                             await message.add_reaction("❌")
                             await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
-                            await message.channel.send("Counting may continue at", message_number, "!")
+                            await message.channel.send(f"Counting may continue at {message_number}!")
                             return
 
                     if message_number == self.expected_number: 
@@ -155,6 +157,7 @@ class Counting(commands.Cog, name="Counting"):
                             update_record(self.record)
 
                         # reset the counter
+                        database_copy(self.expected_number)
                         self.expected_number = 1
                         database_push(self.expected_number)
                         self.last_messanger = None
@@ -205,3 +208,23 @@ def database_push(num: int):
     counter_ref.update({
         u'count': num
     })
+
+def database_copy(num: int):
+    # implementation for production bot only
+    counter_backup_ref = db.collection(u'counting').document(u'count_backup')
+    if num > 1:
+        counter_backup_ref.update ({
+            u'count_backup': num
+        })
+
+def pull_backup():
+    backup_numnber: int = 0
+    
+    doc_ref = db.collection(u'counting').document(u'count_backup')
+    doc = doc_ref.get()
+    if doc.exists:
+        backup_numnber = doc.to_dict()['count_backup']
+
+    return backup_numnber
+
+    

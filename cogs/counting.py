@@ -54,17 +54,17 @@ class Counting(commands.Cog, name="Counting"):
         database_push(self.expected_number)
         await ctx.message.add_reaction('✅')
 
-#    @commands.command(name="restore")
-#    async def restore_number(self, ctx):
-#         try:
-#             print("Count will be restored")
-#             backup_numnber = pull_backup()
-#             if backup_numnber == 0:
-#                 raise ValueError("The number must be greater than 0.")
+    @commands.command(name="restore")
+    async def restore_number(self, ctx):
+        try:
+            print("Count will be restored")
+            backup_numnber = pull_backup()
+            if backup_numnber == 0:
+                raise ValueError("The number must be greater than 0.")
             
-#             self.expected_number = backup_numnber
-#         except ValueError as e:
-#             print(f"Error: {e}")        
+            self.expected_number = backup_numnber
+        except ValueError as e:
+            print(f"Error: {e}")        
 
     @commands.Cog.listener()
     async def on_message(self, message):

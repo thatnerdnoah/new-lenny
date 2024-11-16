@@ -29,6 +29,7 @@ class Counting(commands.Cog, name="Counting"):
         self.last_messanger = None
         self.expected_number = 1
         self.record = 0
+        self.lives = 3
         
 
     @commands.Cog.listener()
@@ -36,15 +37,16 @@ class Counting(commands.Cog, name="Counting"):
         self.counting_channel = self.bot.get_channel(config.counting_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
 
-        print("Before database pull:", self.expected_number, self.record)
+        print("Before database pull:", self.expected_number, self.record, self.lives)
         
-        db_number, record_number = database_pull()
+        db_number, record_number, lives = database_pull()
 
         if db_number != 0:
             self.expected_number = db_number
             self.record = record_number
+            self.lives = lives
 
-        print("After database pull:", self.expected_number, self.record)
+        print("After database pull:", self.expected_number, self.record, self.lives)
         print("Counting begins!")
 
     @commands.command(name="setnumber", aliases=['set'])
@@ -58,11 +60,21 @@ class Counting(commands.Cog, name="Counting"):
     async def restore_number(self, ctx):
         try:
             print("Count will be restored")
+            # current count variable for embed
+            current_count = self.expected_number
             backup_number = pull_backup()
             if backup_number == 0:
                 raise ValueError("The number must be greater than 0.")
             
             self.expected_number = backup_number
+            embed = Embed(
+                title="The counting has been restored!",
+                type='rich',
+                colour=Colour.purple()
+            )
+            embed.add_field(name="Current count before restore", value=current_count, inline=False)
+            embed.add_field(name="Next number to type in", value=backup_number, inline=False)
+            await self.log_channel.send(embed=embed)
             await ctx.message.add_reaction('✅')
         except ValueError as e:
             await ctx.message.add_reaction('❌')
@@ -147,28 +159,50 @@ class Counting(commands.Cog, name="Counting"):
                         database_push(self.expected_number)
                         await message.add_reaction("✅")
                     else:
-                        # Embed log
-                        embed = Embed(
-                            title="The counting stopped!",
-                            type='rich',
-                            colour=Colour.purple()
-                        )
-                        embed.add_field(name="Expected number", value=self.expected_number, inline=False)
-                        embed.add_field(name="Number typed in", value=message_number, inline=False)
-                        await self.log_channel.send(embed=embed)
-                        
-                        # set the record
-                        if self.expected_number > self.record:
-                            self.record = self.expected_number
-                            update_record(self.record)
+                        if self.lives <= 1:
+                            # Embed log
+                            embed = Embed(
+                                title="The counting stopped!",
+                                type='rich',
+                                colour=Colour.purple()
+                            )
+                            embed.add_field(name="Expected number", value=self.expected_number, inline=False)
+                            embed.add_field(name="Number typed in", value=message_number, inline=False)
+                            await self.log_channel.send(embed=embed)
+                            
+                            # set the record
+                            if self.expected_number > self.record:
+                                self.record = self.expected_number
+                                update_record(self.record)
 
-                        # reset the counter
-                        database_copy(self.expected_number)
-                        self.expected_number = 1
-                        database_push(self.expected_number)
-                        self.last_messanger = None
-                        await message.add_reaction("❌")
-                        await message.channel.send(f"<@{message.author.id}> cant count!")
+                            # reset the counter
+                            database_copy(self.expected_number)
+                            self.expected_number = 1
+                            database_push(self.expected_number)
+                            self.last_messanger = None
+                            self.lives = 3
+                            update_lives(self.lives)
+                            await message.add_reaction("❌")
+                            await message.channel.send(f"<@{message.author.id}> cant count!")
+                        else:
+                            embed = Embed(
+                                title="A life was used on counting!",
+                                type='rich',
+                                colour=Colour.purple()
+                            )
+                            embed.add_field(name="Expected number", value=self.expected_number, inline=False)
+                            embed.add_field(name="Number typed in", value=message_number, inline=False)
+                            embed.add_field(name="Number of lives left", value=self.lives, inline=False)
+                            await self.log_channel.send(embed=embed)
+
+                            self.lives -= 1
+                            update_lives(self.lives)
+                            await message.add_reaction("❌")
+                            await message.channel.send(f"<@{message.author.id}> cant count!")
+                            if self.lives == 1:
+                                await message.channel.send(f"You have one life left! Don't waste it!")
+                            else:
+                                await message.channel.send(f"You have {self.lives} lives left!")
 
                 except Exception:
                     return   
@@ -181,6 +215,7 @@ async def setup(client):
 def database_pull():
     expected_number : int = 0
     record : int = 0
+    lives : int = 0
 
     if not config.local_test:
         doc_ref = db.collection(u'counting').document(u'count')
@@ -192,8 +227,9 @@ def database_pull():
     if doc.exists:
         expected_number = doc.to_dict()['count']
         record = doc.to_dict()['reward']
+        lives = doc.to_dict()['lives']
 
-    return expected_number, record
+    return expected_number, record, lives
 
 def update_record(num: int):
     if not config.local_test:
@@ -213,6 +249,16 @@ def database_push(num: int):
 
     counter_ref.update({
         u'count': num
+    })
+
+def update_lives(num: int):
+    if not config.local_test:
+        counter_ref = db.collection(u'counting').document(u'count')
+    else:
+        counter_ref = db.collection(u'counting').document(u'count_test')
+
+    counter_ref.update({
+        u'lives': num
     })
 
 def database_copy(num: int):

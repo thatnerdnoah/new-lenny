@@ -91,7 +91,7 @@ class Counting(commands.Cog, name="Counting"):
                 try:
                     message_number = int(message.content)
 
-                    if message.author == self.last_messanger and not local_test:
+                    if message.author == self.last_messanger:
                             await message.add_reaction("❌")
                             await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
                             await message.channel.send(f"Counting may continue at {message_number}!")
@@ -185,6 +185,9 @@ class Counting(commands.Cog, name="Counting"):
                             await message.add_reaction("❌")
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                         else:
+                            self.lives -= 1
+                            update_lives(self.lives)
+                            
                             embed = Embed(
                                 title="A life was used on counting!",
                                 type='rich',
@@ -195,8 +198,6 @@ class Counting(commands.Cog, name="Counting"):
                             embed.add_field(name="Number of lives left", value=self.lives, inline=False)
                             await self.log_channel.send(embed=embed)
 
-                            self.lives -= 1
-                            update_lives(self.lives)
                             await message.add_reaction("❌")
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                             if self.lives == 1:

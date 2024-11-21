@@ -10,7 +10,7 @@ try:
 except ImportError:
     import config
 
-cred = credentials.Certificate("./helpers/lennydb-94aae-firebase-adminsdk-lp085-9c8442a238.json")
+cred = credentials.Certificate(config.path_to_credential)
 firebase_admin.initialize_app(cred)
  
 db = firestore.client()

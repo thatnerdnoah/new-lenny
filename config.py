@@ -10,6 +10,7 @@ bot_id = 597109548104548390
 prefix = "$"
 project_id = environ["PROJECT_ID"]
 discord_name = "Snoop Troop"
+path_to_credential = str(environ["CRED_FILE"])
 local_test = False
 
 # url = 'https://api.fortnitetracker.com/v1/store'

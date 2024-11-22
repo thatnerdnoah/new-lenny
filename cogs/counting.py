@@ -47,20 +47,19 @@ class Counting(commands.Cog, name="Counting"):
     @app_commands.describe(number_to_set="The number to set the count to")
     @app_commands.rename(number_to_set="number")
     async def set_number(self, interaction: Interaction, number_to_set: int):
-        # bot_latency = round(self.bot.latency * 1000)
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("How did you find this command?", ephemeral=True)
+        
         print("Command sent to set current number to", number_to_set)
         self.expected_number = number_to_set
         database.database_push(self.expected_number)
         await interaction.response.send_message(f"Counting's next number has been set to {self.expected_number}!", ephemeral=True)
 
-    # new command using slash command syntax
-    @app_commands.command(name="ping", description="Test of slash commands")
-    async def ping(self, interaction: Interaction):
-        bot_latency = round(self.bot.latency * 1000)
-        await interaction.response.send_message(f"Pong! {bot_latency} ms", ephemeral=True)
-
     @app_commands.command(name="restorecount", description="Restore the count to the previous highest number")
     async def restore_number(self, interaction: Interaction):
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("How did you find this command?", ephemeral=True)
+        
         try:
             print("Count will be restored")
             # current count variable for embed
@@ -78,12 +77,12 @@ class Counting(commands.Cog, name="Counting"):
             embed.add_field(name="Current count before restore", value=current_count, inline=False)
             embed.add_field(name="Next number to type in", value=backup_number, inline=False)
             await self.log_channel.send(embed=embed)
-            await interaction.response.send_message("Count has been restored! Check #logs for more info!")
+            await interaction.response.send_message("Count has been restored! Check #logs for more info!", ephemeral=True)
         except ValueError as e:
-            await interaction.response.send_message("The value of the backup number was 0! Set the count manually.")
+            await interaction.response.send_message("The value of the backup number was 0! Set the count manually.", ephemeral=True)
             print(f"Error: {e}")
         except Exception as e:
-            await interaction.response.send_message("Something went wrong!")
+            await interaction.response.send_message("Something went wrong!", ephemeral=True)
             print(f"Error: {e}")
         
 

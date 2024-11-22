@@ -42,15 +42,25 @@ class Counting(commands.Cog, name="Counting"):
         print("After database pull:", self.expected_number, self.record, self.lives)
         print("Counting begins!")
 
-    @commands.command(name="setnumber", aliases=['set'])
-    async def set_number(self, ctx, number_to_set: int):
+    # old command with the prefix
+    @app_commands.command(name="countnumber", description="Set the next number for counting")
+    @app_commands.describe(number_to_set="The number to set the count to")
+    @app_commands.rename(number_to_set="number")
+    async def set_number(self, interaction: Interaction, number_to_set: int):
+        # bot_latency = round(self.bot.latency * 1000)
         print("Command sent to set current number to", number_to_set)
         self.expected_number = number_to_set
         database.database_push(self.expected_number)
-        await ctx.message.add_reaction('✅')
+        await interaction.response.send_message(f"Counting's next number has been set to {self.expected_number}!", ephemeral=True)
 
-    @commands.command(name="restore")
-    async def restore_number(self, ctx):
+    # new command using slash command syntax
+    @app_commands.command(name="ping", description="Test of slash commands")
+    async def ping(self, interaction: Interaction):
+        bot_latency = round(self.bot.latency * 1000)
+        await interaction.response.send_message(f"Pong! {bot_latency} ms", ephemeral=True)
+
+    @app_commands.command(name="restorecount", description="Restore the count to the previous highest number")
+    async def restore_number(self, interaction: Interaction):
         try:
             print("Count will be restored")
             # current count variable for embed
@@ -68,12 +78,12 @@ class Counting(commands.Cog, name="Counting"):
             embed.add_field(name="Current count before restore", value=current_count, inline=False)
             embed.add_field(name="Next number to type in", value=backup_number, inline=False)
             await self.log_channel.send(embed=embed)
-            await ctx.message.add_reaction('✅')
+            await interaction.response.send_message("Count has been restored! Check #logs for more info!")
         except ValueError as e:
-            await ctx.message.add_reaction('❌')
+            await interaction.response.send_message("The value of the backup number was 0! Set the count manually.")
             print(f"Error: {e}")
         except Exception as e:
-            await ctx.message.add_reaction('？')
+            await interaction.response.send_message("Something went wrong!")
             print(f"Error: {e}")
         
 
@@ -154,63 +164,4 @@ class Counting(commands.Cog, name="Counting"):
             
 async def setup(client):
     await client.add_cog(Counting(client))
-
-# helper functions
-async def upload_meme(message, number):
-    if number == 1:
-        await message.channel.send(file=File("./media/1.jpg"))
-    elif number == 10:
-        ben_tits = rand.randint(0,1)
-        if ben_tits == 0:
-            await message.channel.send("woah 10 bits!")
-        elif ben_tits == 1:
-            await message.channel.send("woah ben tits!")
-        else:
-            await message.channel.send("woah 10 bits!")
-    elif number == 21:
-        await message.channel.send(file=File("./media/21.gif"))
-    elif number == 25:
-        await message.channel.send(file=File("./media/25.gif"))
-    elif number == 42:
-        await message.channel.send("the meaning of life")
-    elif number == 51:
-        aliens = rand.randint(0,1)
-        if aliens == 0:
-            await message.channel.send(file=File("./media/51.gif"))
-        elif aliens == 1:
-            await message.channel.send(file=File("./media/51.jpg"))
-        else:
-            await message.channel.send("woah 10 bits!")
-    elif number == 66:
-        await message.channel.send(file=File("./media/66.gif"))
-    elif number == 69:
-        await message.channel.send("nice", file=File("./media/69.png"))
-    # elif self.expected_number == 96:
-    #     await message.channel.send("not nice")
-    elif number == 100:
-        await message.channel.send(file=File("./media/100.gif"))
-    elif number == 111:
-        await message.channel.send(file=File("./media/111.gif"))
-    # elif self.expected_number == 137:
-    #     await message.channel.send("MAX LAFF POI... wait")
-    elif number == 140:
-        await message.channel.send("MAX LAFF POINTS!")
-    elif number == 222:
-        await message.channel.send(file=File("./media/222.gif"))
-    elif number == 305:
-        await message.channel.send("Dale???? Idk who dale is")
-    elif number == 314:
-        await message.channel.send(file=File("./media/314.gif"))
-    elif number == 321:
-        await message.channel.send(file=File("./media/321.gif"))
-    elif number == 333:
-        await message.channel.send(file=File("./media/333.gif"))
-    elif number == 404:
-        await message.channel.send("Error: not found", file=File("./media/404.gif"))
-    elif number == 420:
-        await message.channel.send("BLAZE IT!", file=File("./media/420.gif"))
-    elif number == 444:
-        await message.channel.send(file=File("./media/444.gif"))
-
-
     

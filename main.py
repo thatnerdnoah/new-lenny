@@ -23,13 +23,8 @@ async def on_ready():
         synced = await bot.tree.sync()
         print(f"Synced {len(synced)} command(s).")
     except Exception as e:
-        bot.get_channel(config.log_channel).send("The bot didn't load correctly. Check the logs!")
+        bot.get_channel(config.log_channel).send("The bot didn't load correctly. Check the server!")
         print(e)
-
-@bot.command(name="sync")
-async def sync(ctx):
-    synced = await bot.tree.sync()
-    print(f"Synced {len(synced)} command(s).")
 
 async def main():
     async with bot:

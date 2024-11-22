@@ -2,6 +2,7 @@ from discord import TextChannel, File, Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 from helpers import database
 from media import meme
+import asyncio
 import random as rand
 
 local_test = False
@@ -95,6 +96,7 @@ class Counting(commands.Cog, name="Counting"):
                     if not local_test:
                         if message.author == self.last_messanger:
                                 await message.add_reaction("❌")
+                                await asyncio.sleep(0.1)
                                 await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
                                 await message.channel.send(f"Counting may continue at {self.expected_number}!")
                                 return
@@ -109,6 +111,7 @@ class Counting(commands.Cog, name="Counting"):
                         self.expected_number += 1
                         database.database_push(self.expected_number)
                         await message.add_reaction("✅")
+                        await asyncio.sleep(0.1)
                     else:
                         if self.lives <= 1:
                             # Embed log
@@ -134,6 +137,7 @@ class Counting(commands.Cog, name="Counting"):
                             self.lives = 3
                             database.update_lives(self.lives)
                             await message.add_reaction("❌")
+                            await asyncio.sleep(0.1)
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                         else:
                             self.lives -= 1
@@ -150,6 +154,7 @@ class Counting(commands.Cog, name="Counting"):
                             await self.log_channel.send(embed=embed)
 
                             await message.add_reaction("❌")
+                            await asyncio.sleep(0.1)
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                             if self.lives == 1:
                                 await message.channel.send(f"You have one life left! Don't waste it!")

@@ -27,6 +27,13 @@ async def on_ready():
         bot.get_channel(config.log_channel).send("The bot didn't load correctly. Check the server!")
         print(e)
 
+@bot.command(name="sync")
+async def sync(ctx):
+    synced = await bot.tree.sync()
+    for sync in synced:
+        print(f"{sync}")
+    print(f"Synced {len(synced)} command(s).")
+
 async def main():
     async with bot:
         try:

@@ -20,17 +20,27 @@ class Dice(commands.Cog, name="Dice"):
         self.log_channel = self.bot.get_channel(config.log_channel)
         print("I am ready to roll! (Dice cog loaded)")
 
-    @app_commands.command(name="roll", description="Roll a D20!")
-    async def roll_number(self, interaction: Interaction):
+    @app_commands.command(name="roll", description="Roll a dice!")
+    @app_commands.describe(dice="the dice you want to roll")
+    @app_commands.choices(dice=[
+        app_commands.Choice(name='d20', value="d20"),
+        app_commands.Choice(name='d100', value="d100")
+    ])
+    async def roll_number(self, interaction: Interaction, dice: app_commands.Choice[str]):
+        outer_rand = 0
+        if dice.value == "d20":
+            outer_rand = 20
+        elif dice.value == "d100":
+            outer_rand = 100
+    
         try:
-            rolled_number = rand.randint(1,20)
+            rolled_number = rand.randint(1, outer_rand)
             embed = Embed(
-                title="D20 Roll",
+                title=f"d{outer_rand} Roll",
                 type='rich',
                 description=f"**{rolled_number}**",
-                color=Colour.purple()
+                color=Colour.red()
             )
-            # embed.add_field(name="Rolled number", value=rolled_number)
             await interaction.response.send_message(embed=embed)
         except Exception as e:
             print(e)

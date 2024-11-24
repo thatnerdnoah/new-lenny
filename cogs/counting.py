@@ -94,7 +94,7 @@ class Counting(commands.Cog, name="Counting"):
         # Sets the lives, with a max amount of lives to 3
         try:
             return_number = lives_to_set
-            # We do not want more tha  3 lives as this can make the count go longer than it should
+            # We do not want more than 3 lives as this can make the count go longer than it should
             if return_number > 3:
                 return_number = 3
                 print(f"Lives was inputted as {lives_to_set}. Setting to {return_number}.")
@@ -114,8 +114,8 @@ class Counting(commands.Cog, name="Counting"):
                     message_number = int(message.content)
                     if not local_test:
                         if message.author == self.last_messanger:
-                                await message.add_reaction("❌")
                                 await asyncio.sleep(0.1)
+                                await message.add_reaction("❌")
                                 await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
                                 await message.channel.send(f"Counting may continue at {self.expected_number}!")
                                 return
@@ -129,8 +129,8 @@ class Counting(commands.Cog, name="Counting"):
                         
                         self.expected_number += 1
                         database.database_push(self.expected_number)
-                        await message.add_reaction("✅")
                         await asyncio.sleep(0.1)
+                        await message.add_reaction("✅")
                     else:
                         if self.lives <= 1:
                             # Embed log
@@ -155,8 +155,8 @@ class Counting(commands.Cog, name="Counting"):
                             self.last_messanger = None
                             self.lives = 3
                             database.update_lives(self.lives)
-                            await message.add_reaction("❌")
                             await asyncio.sleep(0.1)
+                            await message.add_reaction("❌")
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                         else:
                             self.lives -= 1
@@ -172,8 +172,8 @@ class Counting(commands.Cog, name="Counting"):
                             embed.add_field(name="Number of lives left", value=self.lives, inline=False)
                             await self.log_channel.send(embed=embed)
 
-                            await message.add_reaction("❌")
                             await asyncio.sleep(0.1)
+                            await message.add_reaction("❌")
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                             if self.lives == 1:
                                 await message.channel.send(f"You have one life left! Don't waste it!")

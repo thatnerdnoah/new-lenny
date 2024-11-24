@@ -28,7 +28,12 @@ async def on_ready():
 
 async def main():
     async with bot:
-        await bot.load_extension("cogs.counting")
+        try:
+            for cog in config.cogs:
+                await bot.load_extension(cog)
+        except Exception as e:
+            print(e)
+        
         await bot.start(config.token)
 
 if __name__ == "__main__":

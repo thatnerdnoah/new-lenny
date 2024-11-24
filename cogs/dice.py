@@ -23,14 +23,17 @@ class Dice(commands.Cog, name="Dice"):
 
     @app_commands.command(name="roll", description="Roll a D20!")
     async def roll_number(self, interaction: Interaction):
-        rolled_number = rand.randint(1,20)
-        embed = Embed(
-            title="D20 Roll",
-            type='rich',
-            color=Colour.purple()
-        )
-        embed.add_field(value=rolled_number)
-        await interaction.response.send_message(embeds=embed)
+        try:
+            rolled_number = rand.randint(1,20)
+            embed = Embed(
+                title="D20 Roll",
+                type='rich',
+                color=Colour.purple()
+            )
+            embed.add_field(name="Rolled number", value=rolled_number)
+            await interaction.send_message(f"{rolled_number}")
+        except Exception as e:
+            print(e)
 
 async def setup(client):
     await client.add_cog(Dice(client))

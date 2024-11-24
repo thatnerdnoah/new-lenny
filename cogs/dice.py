@@ -18,7 +18,6 @@ class Dice(commands.Cog, name="Dice"):
     async def on_ready(self):
         self.dice_channel = self.bot.get_channel(config.dice_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
-
         print("I am ready to roll! (Dice cog loaded)")
 
     @app_commands.command(name="roll", description="Roll a D20!")
@@ -28,10 +27,11 @@ class Dice(commands.Cog, name="Dice"):
             embed = Embed(
                 title="D20 Roll",
                 type='rich',
+                description=f"**{rolled_number}**",
                 color=Colour.purple()
             )
-            embed.add_field(name="Rolled number", value=rolled_number)
-            await interaction.send_message(f"{rolled_number}")
+            # embed.add_field(name="Rolled number", value=rolled_number)
+            await interaction.response.send_message(embed=embed)
         except Exception as e:
             print(e)
 

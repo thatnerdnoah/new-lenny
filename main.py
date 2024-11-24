@@ -1,7 +1,6 @@
-import traceback
 import asyncio
 
-from discord import Game, Intents, app_commands
+from discord import Game, Intents
 
 from discord.ext.commands import Bot
 
@@ -21,6 +20,8 @@ async def on_ready():
     try:
         await bot.change_presence(activity=Game(name="Escaping Meteor Simulator"))
         synced = await bot.tree.sync()
+        for sync in synced:
+            print(f"{sync}")
         print(f"Synced {len(synced)} command(s).")
     except Exception as e:
         bot.get_channel(config.log_channel).send("The bot didn't load correctly. Check the server!")
@@ -28,7 +29,12 @@ async def on_ready():
 
 async def main():
     async with bot:
-        await bot.load_extension("cogs.counting")
+        try:
+            for cog in config.cogs:
+                await bot.load_extension(cog)
+        except Exception as e:
+            print(e)
+        
         await bot.start(config.token)
 
 if __name__ == "__main__":

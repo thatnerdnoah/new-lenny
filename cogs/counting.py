@@ -1,9 +1,8 @@
-from discord import TextChannel, File, Embed, Colour, app_commands, Interaction
+from discord import TextChannel, Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 from helpers import database
 from media import meme
 import asyncio
-import random as rand
 
 local_test = False
 
@@ -12,7 +11,6 @@ try:
     local_test = True
 except ImportError:
     import config
-
 
 class Counting(commands.Cog, name="Counting"):
     def __init__(self, bot) -> None:
@@ -43,7 +41,7 @@ class Counting(commands.Cog, name="Counting"):
         print("After database pull:", self.expected_number, self.record, self.lives)
         print("Counting begins!")
 
-    # old command with the prefix
+    # Commands for setting the count, restoring count, and setting the number of lives
     @app_commands.command(name="countnumber", description="Set the next number for counting")
     @app_commands.describe(number_to_set="The number to set the count to")
     @app_commands.rename(number_to_set="number")
@@ -85,7 +83,28 @@ class Counting(commands.Cog, name="Counting"):
         except Exception as e:
             await interaction.response.send_message("Something went wrong!", ephemeral=True)
             print(f"Error: {e}")
+
+    @app_commands.command(name="setlives", description="Set the number of lives")
+    @app_commands.describe(lives_to_set="Number of lives to set the bot to")
+    @app_commands.rename(lives_to_set="lives")
+    async def set_lives(self, interaction: Interaction, lives_to_set: int):
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("How did you find this command?", ephemeral=True)
         
+        # Sets the lives, with a max amount of lives to 3
+        try:
+            return_number = lives_to_set
+            # We do not want more tha  3 lives as this can make the count go longer than it should
+            if return_number > 3:
+                return_number = 3
+                print(f"Lives was inputted as {lives_to_set}. Setting to {return_number}.")
+
+            self.lives = return_number
+            database.update_lives(self.lives)
+            await interaction.response.send_message(f"Lives have been set to {return_number}!", ephemeral=True)
+        except Exception as e:
+            await interaction.response.send_message("Something went wrong!", ephemeral=True)
+            print(f"Error: {e}")
 
     @commands.Cog.listener()
     async def on_message(self, message):

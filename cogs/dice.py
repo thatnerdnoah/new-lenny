@@ -23,16 +23,28 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.command(name="roll", description="Roll a dice!")
     @app_commands.describe(dice="the dice you want to roll")
     @app_commands.choices(dice=[
+        app_commands.Choice(name="d2", value="d2"),
+        app_commands.Choice(name="d4", value="d4"),
+        app_commands.Choice(name="d6", value="d6"),
+        app_commands.Choice(name="d10", value="d10"),
         app_commands.Choice(name='d20', value="d20"),
         app_commands.Choice(name='d100', value="d100")
     ])
     async def roll_number(self, interaction: Interaction, dice: app_commands.Choice[str]):
         outer_rand = 0
-        if dice.value == "d20":
+        if dice.value == "d2":
+            outer_rand = 2
+        elif dice.value == "d4":
+            outer_rand = 4
+        elif dice.value == "d6":
+            outer_rand = 6
+        elif dice.value == "d10":
+            outer_rand = 10
+        elif dice.value == "d20":
             outer_rand = 20
         elif dice.value == "d100":
             outer_rand = 100
-    
+  
         try:
             rolled_number = rand.randint(1, outer_rand)
             embed = Embed(

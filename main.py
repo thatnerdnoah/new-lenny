@@ -31,6 +31,7 @@ async def sync(ctx):
     for sync in synced:
         print(f"{sync}")
     print(f"Synced {len(synced)} command(s).")
+    await ctx.message.add_reaction('✅')
 
 async def main():
     async with bot:

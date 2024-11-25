@@ -21,7 +21,9 @@ class Dice(commands.Cog, name="Dice"):
         print("I am ready to roll! (Dice cog loaded)")
 
     @app_commands.command(name="roll", description="Roll a dice!")
-    @app_commands.describe(dice="the dice you want to roll")
+    @app_commands.describe(dice="The dice you want to roll")
+    @app_commands.describe(what_for="What are you rolling for?")
+    @app_commands.rename(what_for="for")
     @app_commands.choices(dice=[
         app_commands.Choice(name="d2", value="d2"),
         app_commands.Choice(name="d4", value="d4"),
@@ -30,7 +32,7 @@ class Dice(commands.Cog, name="Dice"):
         app_commands.Choice(name='d20', value="d20"),
         app_commands.Choice(name='d100', value="d100")
     ])
-    async def roll_number(self, interaction: Interaction, dice: app_commands.Choice[str]):
+    async def roll_number(self, interaction: Interaction, dice: app_commands.Choice[str], what_for: str = ''):
         outer_rand = 0
         if dice.value == "d2":
             outer_rand = 2
@@ -48,7 +50,7 @@ class Dice(commands.Cog, name="Dice"):
         try:
             rolled_number = rand.randint(1, outer_rand)
             embed = Embed(
-                title=f"d{outer_rand} Roll",
+                title=f"{what_for} (d{outer_rand})" if what_for != '' else f"d{outer_rand} Roll",
                 type='rich',
                 description=f"**{rolled_number}**",
                 color=Colour.red()

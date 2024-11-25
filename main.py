@@ -1,7 +1,5 @@
 import asyncio
-
 from discord import Game, Intents
-
 from discord.ext.commands import Bot
 
 try:

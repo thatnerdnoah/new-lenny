@@ -23,9 +23,17 @@ class Counting(commands.Cog, name="Counting"):
         self.record = 0
         self.lives = 3
         
+    async def cog_load(self) -> None:
+        self.initialize_cog()
+
+    async def cog_unload(self) -> None:
+        self.bot.remove_listener(self.on_message)
 
     @commands.Cog.listener()
     async def on_ready(self):
+        self.initialize_cog()
+
+    def initialize_cog(self):
         self.counting_channel = self.bot.get_channel(config.counting_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
 
@@ -185,6 +193,5 @@ class Counting(commands.Cog, name="Counting"):
         else: 
             return
             
-async def setup(client):
-    await client.add_cog(Counting(client))
-    
+async def setup(bot):
+    await bot.add_cog(Counting(bot))   

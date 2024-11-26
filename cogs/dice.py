@@ -16,6 +16,12 @@ class Dice(commands.Cog, name="Dice"):
 
     @commands.Cog.listener()
     async def on_ready(self):
+        self.initialize_cog()
+
+    async def cog_load(self) -> None:
+        self.initialize_cog()
+        
+    def initialize_cog(self):
         self.dice_channel = self.bot.get_channel(config.dice_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
         print("I am ready to roll! (Dice cog loaded)")

@@ -1,5 +1,5 @@
 import asyncio
-from discord import Game, Intents
+from discord import Game, Intents, app_commands, Interaction
 from discord.ext.commands import Bot
 
 try:
@@ -25,22 +25,19 @@ async def on_ready():
         bot.get_channel(config.log_channel).send("The bot didn't load correctly. Check the server!")
         print(e)
 
-@bot.command(name="sync")
-async def sync(ctx):
+@bot.tree.command(name="sync", description="Sync all slash commands")
+async def sync(interaction: Interaction):
+    if not interaction.user.guild_permissions.administrator:
+        return await interaction.response.send_message("How did you find this command?", ephemeral=True)
+        
     synced = await bot.tree.sync()
     for sync in synced:
         print(f"{sync}")
     print(f"Synced {len(synced)} command(s).")
-    await ctx.message.add_reaction('✅')
 
 async def main():
     async with bot:
-        try:
-            for cog in config.cogs:
-                await bot.load_extension(cog)
-        except Exception as e:
-            print(e)
-        
+        await bot.load_extension("cogs.cog_manager")
         await bot.start(config.token)
 
 if __name__ == "__main__":

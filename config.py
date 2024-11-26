@@ -5,6 +5,7 @@ token = environ["DISCORD_TOKEN"]
 mod_channel = int(environ["MOD_CHANNEL"])
 log_channel = int(environ["LOG_CHANNEL"])
 counting_channel = int(environ["COUNTING_CHANNEL"])
+dice_channel = 0
 cogs = ["cogs.counting", "cogs.dice"]
 bot_id = 597109548104548390
 prefix = "$"

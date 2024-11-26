@@ -25,15 +25,16 @@ async def on_ready():
         bot.get_channel(config.log_channel).send("The bot didn't load correctly. Check the server!")
         print(e)
 
-@bot.tree.command(name="sync", description="Sync all slash commands")
-async def sync(interaction: Interaction):
-    if not interaction.user.guild_permissions.administrator:
-        return await interaction.response.send_message("How did you find this command?", ephemeral=True)
+@bot.command(name="sync")
+async def sync(ctx):
+    # if not interaction.user.guild_permissions.administrator:
+    #     return await interaction.response.send_message("How did you find this command?", ephemeral=True)
         
     synced = await bot.tree.sync()
     for sync in synced:
         print(f"{sync}")
     print(f"Synced {len(synced)} command(s).")
+    await ctx.message.add_reaction('✅')
 
 async def main():
     async with bot:

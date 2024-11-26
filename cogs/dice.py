@@ -11,8 +11,8 @@ except ImportError:
 class Dice(commands.Cog, name="Dice"):
     def __init__(self, bot) -> None:
         self.bot: commands.Bot = bot
-        self.dice_channel : TextChannel = None
-        self.log_channel : TextChannel = None
+        # self.dice_channel : TextChannel = None
+        # self.log_channel : TextChannel = None
 
     @commands.Cog.listener()
     async def on_ready(self):

@@ -37,7 +37,7 @@ class Dice(commands.Cog, name="Dice"):
         app_commands.Choice(name="d10", value="d10"),
         app_commands.Choice(name='d20', value="d20"),
         app_commands.Choice(name='d100', value="d100"),
-        app_commands.Choice(name="d1000", value="d1000")
+        app_commands.Choice(name="d1000", value="d1000"),
         app_commands.Choice(name="d10000", value="d10000")
     ])
     async def roll_number(self, interaction: Interaction, dice: app_commands.Choice[str], what_for: str = ''):

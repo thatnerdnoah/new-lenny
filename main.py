@@ -17,10 +17,6 @@ async def on_ready():
     print(f"Logged in as {bot.user.name}!")
     try:
         await bot.change_presence(activity=Game(name="Escaping Meteor Simulator"))
-        # synced = await bot.tree.sync()
-        # for sync in synced:
-        #     print(f"{sync}")
-        # print(f"Synced {len(synced)} command(s).")
     except Exception as e:
         bot.get_channel(config.log_channel).send("The bot didn't load correctly. Check the server!")
         print(e)
@@ -34,7 +30,7 @@ async def sync(ctx):
     for sync in synced:
         print(f"{sync}")
     print(f"Synced {len(synced)} command(s).")
-    await interaction.response.send_message(f"Synced {len(synced)} command(s)!")
+    # await interaction.response.send_message(f"Synced {len(synced)} command(s)!")
     await ctx.message.add_reaction('✅')
 
 async def main():

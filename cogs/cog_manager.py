@@ -34,34 +34,43 @@ class CogManager(commands.Cog, name="CogManager"):
         print(f"Synced {len(synced)} command(s).")
 
     @app_commands.command(name="load_cog")
+
     async def load_cog_command(self, interaction: Interaction, cog: str, silent: bool = False) -> None:
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("How did you find this command?", ephemeral=True)
         try:
             success_text = f"The cog {cog} loaded successfully!"
             await self.bot.load_extension(cog)
             await self.sync_commands()
             await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
         except Exception as e:
+            await interaction.response.send_message("Oops!", ephemeral=True)
             print(e)
 
     @app_commands.command(name="unload_cog")
     async def unload_cog_command(self, interaction: Interaction, cog: str, silent: bool = False):
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("How did you find this command?", ephemeral=True)
         try:
             success_text: str = f"The cog {cog} was unloaded successfully!"
             await self.bot.unload_extension(cog)
             await self.sync_commands()
             await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
         except Exception as e:
+            await interaction.response.send_message("Oops!", ephemeral=True)
             print(e)
 
     @app_commands.command(name="reload_cog")
-    async def reload_cog_command(self, interaction: Interaction, cog: str, silent: bool = False):       
-
+    async def reload_cog_command(self, interaction: Interaction, cog: str, silent: bool = False):      
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("How did you find this command?", ephemeral=True) 
         try:
             success_text: str = f"The cog {cog} was reloaded successfully!"
             await self.bot.reload_extension(cog)
             await self.sync_commands()
             await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
         except Exception as e:
+            await interaction.response.send_message("Oops!", ephemeral=True)
             print(e)
     
 async def setup(client):

@@ -36,7 +36,9 @@ class Dice(commands.Cog, name="Dice"):
         app_commands.Choice(name="d6", value="d6"),
         app_commands.Choice(name="d10", value="d10"),
         app_commands.Choice(name='d20', value="d20"),
-        app_commands.Choice(name='d100', value="d100")
+        app_commands.Choice(name='d100', value="d100"),
+        app_commands.Choice(name="d1000", value="d1000"),
+        app_commands.Choice(name="d10000", value="d10000")
     ])
     async def roll_number(self, interaction: Interaction, dice: app_commands.Choice[str], what_for: str = ''):
         outer_rand = 0
@@ -52,6 +54,10 @@ class Dice(commands.Cog, name="Dice"):
             outer_rand = 20
         elif dice.value == "d100":
             outer_rand = 100
+        elif dice.value == "d1000":
+            outer_rand = 1000
+        elif dice.value == "d10000":
+            outer_rand = 10000
   
         try:
             rolled_number = rand.randint(1, outer_rand)

@@ -55,6 +55,7 @@ class CogManager(commands.Cog, name="CogManager"):
 
     @app_commands.command(name="reload_cog")
     async def reload_cog_command(self, interaction: Interaction, cog: str, silent: bool = False):       
+
         try:
             success_text: str = f"The cog {cog} was reloaded successfully!"
             await self.bot.reload_extension(cog)

@@ -23,35 +23,51 @@ class CogManager(commands.Cog, name="CogManager"):
         print("Loading pre-configured cogs...")
         try:
             for cog in config.cogs:
-                await self.load_cog(cog=cog, silent=True)
-                self.cogs.append(cog)
+                print(f"Loading {cog}...")
+                await self.bot.load_extension(cog)
             print("All pre-configured cogs loaded!")
+            print("Syncing commands")
+            synced = await self.bot.tree.sync()
+            print(f"Synced {len(synced)} command(s).")
         except Exception as e:
             print(e)
 
-    async def load_cog(self, cog: str, silent: bool = False):
-        await self.bot.load_extension(cog)
+    # async def load_cog(self, cog: str):
+    #     await self.bot.load_extension(cog)
     
-    async def unload_cog(self, cog: str, silent: bool = False) -> None:
-        await self.bot.unload_extension(cog)
+    # async def unload_cog(self, cog: str):
+    #     await self.bot.unload_extension(cog)
 
-    async def reload_cog(self, interaction: Interaction):
-        await self.unload_cog(self, interaction, silent=True)
-        await self.load_cog(self, interaction, silent=True)
+    # async def reload_cog(self, cog: str):
+    #     await self.bot.reload_extension(cog)
 
     @app_commands.command(name="load_cog")
-    async def load_cog_command(self, interaction: Interaction, cog: str, silent: bool) -> None:
-        success_text = f"The cog {cog} loaded successfully!"
-        await self.load_cog(interaction, cog)
-        await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
+    async def load_cog_command(self, interaction: Interaction, cog: str, silent: bool = False) -> None:
+        try:
+            success_text = f"The cog {cog} loaded successfully!"
+            await self.bot.load_extension(cog)
+            await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
+        except Exception as e:
+            print(e)
 
     @app_commands.command(name="unload_cog")
     async def unload_cog_command(self, interaction: Interaction, cog: str, silent: bool = False):
-        success_text: str = f"The cog {cog} was unloaded successfully!"
-        await self.unload_cog(interaction, cog)
-        await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
+        try:
+            success_text: str = f"The cog {cog} was unloaded successfully!"
+            await self.bot.unload_extension(cog)
+            await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
+        except Exception as e:
+            print(e)
 
-    
+    @app_commands.command(name="reload_cog")
+    async def reload_cog_command(self, interaction: Interaction, cog: str, silent: bool = False):
+        
+        try:
+            success_text: str = f"The cog {cog} was reloaded successfully!"
+            await self.bot.reload_extension(cog)
+            await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
+        except Exception as e:
+            print(e)
     
 
 

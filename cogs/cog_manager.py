@@ -34,7 +34,6 @@ class CogManager(commands.Cog, name="CogManager"):
         print(f"Synced {len(synced)} command(s).")
 
     @app_commands.command(name="load_cog")
-
     async def load_cog_command(self, interaction: Interaction, cog: str, silent: bool = False) -> None:
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True)

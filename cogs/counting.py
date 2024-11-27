@@ -184,10 +184,9 @@ class Counting(commands.Cog, name="Counting"):
                             await message.add_reaction("❌")
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                             if self.lives == 1:
-                                await message.channel.send(f"You have one life left! Don't waste it!")
+                                await message.channel.send(f"There is one life left! Don't waste it!")
                             else:
-                                await message.channel.send(f"You have {self.lives} lives left!")
-
+                                await message.channel.send(f"There are {self.lives} lives left!")
                 except Exception:
                     return   
         else: 

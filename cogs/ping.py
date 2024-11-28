@@ -25,7 +25,7 @@ class Ping(commands.Cog, name="ping"):
 
     @app_commands.command(name="ping", description="Ping the bot!")
     async def ping(self, interaction: Interaction):
-        await interaction.response.send_message("Pong!")
+        await interaction.response.send_message("Pong!", ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(Ping(bot))

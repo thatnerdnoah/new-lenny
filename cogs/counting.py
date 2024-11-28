@@ -130,7 +130,7 @@ class Counting(commands.Cog, name="Counting"):
 
                     if message_number == self.expected_number: 
                         self.last_messanger = message.author
-                        await meme.upload_meme(message=message, number=self.expected_number)
+                        await meme.handle_number(message=message, number=self.expected_number)
                         
                         if self.expected_number == self.record + 1:
                             await message.channel.send("You broke the record!")

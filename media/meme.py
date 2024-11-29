@@ -20,6 +20,7 @@ response_map = {
     404: lambda: {"content": "Error: not found", "file": File("./media/404.gif")},
     420: lambda: {"content": "BLAZE IT!", "file": File("./media/420.gif")},
     444: lambda: {"file": File("./media/444.gif")},
+    777: lambda: {"file": File("./media/777.gif")},
 }
 
 # Special cases

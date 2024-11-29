@@ -8,6 +8,11 @@ try:
 except ImportError:
     import config
 
+dice_options = [
+    "d2", "d4", "d6", "d10", "d20", "d100", "d1000", "d10000", "d100000", "the million"
+]
+dice_choices = [app_commands.Choice(name=dice, value=dice) for dice in dice_options]
+
 class Dice(commands.Cog, name="Dice"):
     def __init__(self, bot) -> None:
         self.bot: commands.Bot = bot
@@ -30,45 +35,21 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.describe(dice="The dice you want to roll")
     @app_commands.describe(what_for="What are you rolling for?")
     @app_commands.rename(what_for="for")
-    @app_commands.choices(dice=[
-        app_commands.Choice(name="d2", value="d2"),
-        app_commands.Choice(name="d4", value="d4"),
-        app_commands.Choice(name="d6", value="d6"),
-        app_commands.Choice(name="d10", value="d10"),
-        app_commands.Choice(name='d20', value="d20"),
-        app_commands.Choice(name='d100', value="d100"),
-        app_commands.Choice(name="d1000", value="d1000"),
-        app_commands.Choice(name="d10000", value="d10000"),
-        app_commands.Choice(name="d100000", value="d100000"),
-        app_commands.Choice(name="the million", value="the million")
-    ])
-    async def roll_number(self, interaction: Interaction, dice: app_commands.Choice[str], what_for: str = ''):
-        outer_rand = 0
-        if dice.value == "d2":
-            outer_rand = 2
-        elif dice.value == "d4":
-            outer_rand = 4
-        elif dice.value == "d6":
-            outer_rand = 6
-        elif dice.value == "d10":
-            outer_rand = 10
-        elif dice.value == "d20":
-            outer_rand = 20
-        elif dice.value == "d100":
-            outer_rand = 100
-        elif dice.value == "d1000":
-            outer_rand = 1000
-        elif dice.value == "d10000":
-            outer_rand = 10000
-        elif dice.value == "d100000":
-            outer_rand = 100000
-        elif dice.value == "the million":
-            outer_rand = 1000000
+    @app_commands.choices(dice=dice_choices)
+    async def roll_number(self, interaction: Interaction, dice: str, what_for: str = ''):
+        max_roll = 0
+        if dice.startswith("d"):
+            max_roll = int(dice[1:])  # Extract number after 'd'
+        elif dice == "the million":
+            max_roll = 1000000
+        else:
+            await interaction.response.send_message("Invalid dice selection!", ephemeral=True)
+            return
   
         try:
-            rolled_number = rand.randint(1, outer_rand)
+            rolled_number = rand.randint(1, max_roll)
             embed = Embed(
-                title=f"{what_for} (d{outer_rand})" if what_for != '' else f"d{outer_rand} Roll",
+                title=f"{what_for} (d{max_roll})" if what_for != '' else f"d{max_roll} Roll",
                 type='rich',
                 description=f"**{rolled_number}**",
                 color=Colour.red()

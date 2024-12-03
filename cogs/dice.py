@@ -1,23 +1,15 @@
-from discord import TextChannel, Embed, Colour, app_commands, Interaction
+from discord import Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 import random as rand
 
-try:
-    import config_local as config
-    local_test = True
-except ImportError:
-    import config
-
 dice_options = [
-    "d2", "d4", "d6", "d10", "d20", "d100", "d1000", "d10000", "d100000", "the million"
+    "d4", "d6", "d10", "d20", "d100", "d1000", "d10000", "d100000", "the million"
 ]
 dice_choices = [app_commands.Choice(name=dice, value=dice) for dice in dice_options]
 
 class Dice(commands.Cog, name="Dice"):
     def __init__(self, bot) -> None:
         self.bot: commands.Bot = bot
-        # self.dice_channel : TextChannel = None
-        # self.log_channel : TextChannel = None
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -27,10 +19,27 @@ class Dice(commands.Cog, name="Dice"):
         self.initialize_cog()
         
     def initialize_cog(self):
-        self.dice_channel = self.bot.get_channel(config.dice_channel)
-        self.log_channel = self.bot.get_channel(config.log_channel)
         print("I am ready to roll! (Dice cog loaded)")
 
+    @app_commands.command(name="coin", description="Flip a coin!")
+    @app_commands.describe(what_for="What are you flipping the coin for?")
+    @app_commands.rename(what_for="for")
+    async def coin_flip(self, interaction: Interaction, what_for: str = ''):
+        try:
+            coin = rand.randint(0,1)
+            # print("The coin number is", coin) # debug line
+            embed = Embed(
+                title=f"{what_for} (Coin Flip)" if what_for != '' else "Coin Flip",
+                type='rich',
+                description=f"Heads!" if coin == 0 else f"Tails!",
+                color=Colour.red()
+            )
+            await interaction.response.send_message(embed=embed)
+        except Exception as e:
+            await interaction.response.send_message("Oops!", ephemeral=True)
+            print(e)
+            return
+    
     @app_commands.command(name="roll", description="Roll a dice!")
     @app_commands.describe(dice="The dice you want to roll")
     @app_commands.describe(what_for="What are you rolling for?")

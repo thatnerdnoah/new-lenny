@@ -1,11 +1,33 @@
 from discord import Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 import random as rand
+import time
 
 dice_options = [
     "d4", "d6", "d10", "d20", "d100", "d1000", "d10000", "d100000", "the million"
 ]
 dice_choices = [app_commands.Choice(name=dice, value=dice) for dice in dice_options]
+dice_cog_cooldowns = {}
+
+def dice_cog_cooldown(seconds: int):
+    async def predicate(interaction: Interaction):
+        user_id = interaction.user.id
+        current_time = time.time()
+        
+        if user_id in dice_cog_cooldowns:
+            last_used = dice_cog_cooldowns[user_id]
+            if current_time - last_used < seconds:
+                cooldown_remaining = seconds - (current_time - last_used)
+                await interaction.response.send_message(
+                    f"You're on cooldown! Try again in {cooldown_remaining:.1f} seconds.",
+                    ephemeral=True
+                )
+                return False
+
+        dice_cog_cooldowns[user_id] = current_time
+        return True
+
+    return app_commands.check(predicate)
 
 class Dice(commands.Cog, name="Dice"):
     def __init__(self, bot) -> None:
@@ -24,6 +46,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.command(name="coin", description="Flip a coin!")
     @app_commands.describe(what_for="What are you flipping the coin for?")
     @app_commands.rename(what_for="for")
+    @dice_cog_cooldown(seconds=10)
     async def coin_flip(self, interaction: Interaction, what_for: str = ''):
         try:
             coin = rand.randint(0,1)
@@ -45,6 +68,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.describe(what_for="What are you rolling for?")
     @app_commands.rename(what_for="for")
     @app_commands.choices(dice=dice_choices)
+    @dice_cog_cooldown(seconds=10)
     async def roll_number(self, interaction: Interaction, dice: str, what_for: str = ''):
         max_roll = 0
         if dice.startswith("d"):

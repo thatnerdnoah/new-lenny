@@ -8,6 +8,7 @@ dice_options = [
 ]
 dice_choices = [app_commands.Choice(name=dice, value=dice) for dice in dice_options]
 dice_cog_cooldowns = {}
+cooldown_seconds = 5
 
 def dice_cog_cooldown(seconds: int):
     async def predicate(interaction: Interaction):
@@ -46,7 +47,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.command(name="coin", description="Flip a coin!")
     @app_commands.describe(what_for="What are you flipping the coin for?")
     @app_commands.rename(what_for="for")
-    @dice_cog_cooldown(seconds=10)
+    @dice_cog_cooldown(seconds=5)
     async def coin_flip(self, interaction: Interaction, what_for: str = ''):
         try:
             coin = rand.randint(0,1)
@@ -68,7 +69,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.describe(what_for="What are you rolling for?")
     @app_commands.rename(what_for="for")
     @app_commands.choices(dice=dice_choices)
-    @dice_cog_cooldown(seconds=10)
+    @dice_cog_cooldown(seconds=5)
     async def roll_number(self, interaction: Interaction, dice: str, what_for: str = ''):
         max_roll = 0
         if dice.startswith("d"):

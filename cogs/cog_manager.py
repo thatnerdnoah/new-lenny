@@ -34,6 +34,7 @@ class CogManager(commands.Cog, name="CogManager"):
         print(f"Synced {len(synced)} command(s).")
 
     @app_commands.command(name="load_cog")
+    @app_commands.default_permissions(administrator=True)
     async def load_cog_command(self, interaction: Interaction, cog: str, silent: bool = False) -> None:
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True)
@@ -51,6 +52,7 @@ class CogManager(commands.Cog, name="CogManager"):
             print(e)
 
     @app_commands.command(name="unload_cog")
+    @app_commands.default_permissions(administrator=True)
     async def unload_cog_command(self, interaction: Interaction, cog: str, silent: bool = False):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True)
@@ -68,6 +70,7 @@ class CogManager(commands.Cog, name="CogManager"):
             print(e)
 
     @app_commands.command(name="reload_cog")
+    @app_commands.default_permissions(administrator=True)
     async def reload_cog_command(self, interaction: Interaction, cog: str, silent: bool = False):      
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True) 

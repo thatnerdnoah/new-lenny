@@ -53,6 +53,7 @@ class Counting(commands.Cog, name="Counting"):
     @app_commands.command(name="countnumber", description="Set the next number for counting")
     @app_commands.describe(number_to_set="The number to set the count to")
     @app_commands.rename(number_to_set="number")
+    @app_commands.default_permissions(administrator=True)
     async def set_number(self, interaction: Interaction, number_to_set: int):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True)
@@ -63,6 +64,7 @@ class Counting(commands.Cog, name="Counting"):
         await interaction.response.send_message(f"Counting's next number has been set to {self.expected_number}!", ephemeral=True)
 
     @app_commands.command(name="restorecount", description="Restore the count to the previous highest number")
+    @app_commands.default_permissions(administrator=True)
     async def restore_number(self, interaction: Interaction):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True)
@@ -95,6 +97,7 @@ class Counting(commands.Cog, name="Counting"):
     @app_commands.command(name="setlives", description="Set the number of lives")
     @app_commands.describe(lives_to_set="Number of lives to set the bot to")
     @app_commands.rename(lives_to_set="lives")
+    @app_commands.default_permissions(administrator=True)
     async def set_lives(self, interaction: Interaction, lives_to_set: int):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True)

@@ -69,7 +69,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.describe(what_for="What are you rolling for?")
     @app_commands.rename(what_for="for")
     @app_commands.choices(dice=dice_choices)
-    # @dice_cog_cooldown(seconds=5)
+    @dice_cog_cooldown(seconds=5)
     async def roll_number(self, interaction: Interaction, dice: str, what_for: str = ''):
         max_roll: int = 0
         if dice.startswith("d"):

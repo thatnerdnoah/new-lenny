@@ -38,10 +38,14 @@ class CogManager(commands.Cog, name="CogManager"):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True)
         try:
+            await interaction.response.defer(ephemeral=True)
             success_text = f"The cog {cog} loaded successfully!"
             await self.bot.load_extension(cog)
             await self.sync_commands()
-            await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
+            if not silent:
+                await interaction.followup.send(success_text)
+            else:
+                print(success_text)
         except Exception as e:
             await interaction.response.send_message("Oops!", ephemeral=True)
             print(e)
@@ -51,10 +55,14 @@ class CogManager(commands.Cog, name="CogManager"):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True)
         try:
+            await interaction.response.defer(ephemeral=True)
             success_text: str = f"The cog {cog} was unloaded successfully!"
             await self.bot.unload_extension(cog)
             await self.sync_commands()
-            await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
+            if not silent:
+                await interaction.followup.send(success_text)
+            else: 
+                print(success_text)
         except Exception as e:
             await interaction.response.send_message("Oops!", ephemeral=True)
             print(e)
@@ -64,10 +72,11 @@ class CogManager(commands.Cog, name="CogManager"):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("How did you find this command?", ephemeral=True) 
         try:
+            await interaction.response.defer(ephemeral=True)
             success_text: str = f"The cog {cog} was reloaded successfully!"
             await self.bot.reload_extension(cog)
             await self.sync_commands()
-            await interaction.response.send_message(success_text, ephemeral=True) if not silent else print(success_text)
+            await interaction.followup.send(success_text) if not silent else print(success_text)
         except Exception as e:
             await interaction.response.send_message("Oops!", ephemeral=True)
             print(e)

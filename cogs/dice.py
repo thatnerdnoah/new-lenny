@@ -4,11 +4,11 @@ import random as rand
 import time
 
 dice_options = [
-    "d4", "d6", "d10", "d20", "d100", "d1000", "d10000", "d100000", "the million"
+    "d4", "d6", "d10", "d12", "d20", "d100", "d100000", "d1000000"
 ]
 dice_choices = [app_commands.Choice(name=dice, value=dice) for dice in dice_options]
 dice_cog_cooldowns = {}
-cooldown_seconds = 5
+SPECIAL_NUMBERS = {69, 420, 42069, 69420, 999999}
 
 def dice_cog_cooldown(seconds: int):
     async def predicate(interaction: Interaction):
@@ -69,28 +69,34 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.describe(what_for="What are you rolling for?")
     @app_commands.rename(what_for="for")
     @app_commands.choices(dice=dice_choices)
-    @dice_cog_cooldown(seconds=5)
+    # @dice_cog_cooldown(seconds=5)
     async def roll_number(self, interaction: Interaction, dice: str, what_for: str = ''):
-        max_roll = 0
+        max_roll: int = 0
         if dice.startswith("d"):
             max_roll = int(dice[1:])  # Extract number after 'd'
-        elif dice == "the million":
-            max_roll = 1000000
         else:
             await interaction.response.send_message("Invalid dice selection!", ephemeral=True)
             return
   
         try:
             rolled_number = rand.randint(1, max_roll)
+            # Determine color
+            if rolled_number == max_roll or rolled_number in SPECIAL_NUMBERS:
+                embed_color = Colour.gold()
+            else:
+                embed_color = Colour.red()
+    
             embed = Embed(
                 title=f"{what_for} (d{max_roll})" if what_for != '' else f"d{max_roll} Roll",
                 type='rich',
                 description=f"**{rolled_number}**",
-                color=Colour.red()
+                color=embed_color
             )
             await interaction.response.send_message(embed=embed)
         except Exception as e:
             print(e)
+            
+    # future implementation of adding special numbers
 
 async def setup(client):
     await client.add_cog(Dice(client))

@@ -4,7 +4,7 @@ import random as rand
 import time
 
 dice_options = [
-    "d4", "d6", "d10", "d12", "d20", "d100", "d100000", "d1000000"
+    "d4", "d6", "d10", "d12", "d20", "d100", "d10000", "d1000000"
 ]
 dice_choices = [app_commands.Choice(name=dice, value=dice) for dice in dice_options]
 dice_cog_cooldowns = {}

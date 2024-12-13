@@ -95,7 +95,41 @@ class Dice(commands.Cog, name="Dice"):
             await interaction.response.send_message(embed=embed)
         except Exception as e:
             print(e)
+
+    @app_commands.command(name="advantage", description="Roll two d20 die and take the highest number!")
+    @app_commands.describe(what_for="What are you rolling for?")
+    @app_commands.rename(what_for="for")
+    @dice_cog_cooldown(seconds=5)
+    async def advantage(self, interaction: Interaction, what_for: str = ''):
+        # Roll the two dice
+        roll1 = rand.randint(1,20)
+        roll2 = rand.randint(1,20)
+        result = max(roll1, roll2)
+
+        try:
+            if result == 20 or result in SPECIAL_NUMBERS:
+                embed_color = Colour.gold()
+            else:
+                embed_color = Colour.red()
+    
+            embed = Embed(
+                title=f"{what_for} (Advantage Roll)" if what_for != '' else f"Advantage Roll",
+                type='rich',
+                description=f"**Here are your rolls!**",
+                color=embed_color
+            )
+            embed.add_field(name="First Roll", value=f"{roll1}", inline=False)
+            embed.add_field(name="Second Roll", value=f"{roll2}", inline=False)
+            embed.add_field(name="Result", value=f"Your result is {result}!", inline=False)
             
+            await interaction.response.send_message(embed=embed)
+        except Exception as e:
+            await interaction.response.send("Oops! Something went wrong.", ephemeral=True)
+            print(e)
+        
+        
+
+
     # future implementation of adding special numbers
 
 async def setup(client):

@@ -51,7 +51,7 @@ class Dice(commands.Cog, name="Dice"):
     async def coin_flip(self, interaction: Interaction, what_for: str = ''):
         try:
             coin = rand.randint(0,999)
-            # print(f"The coint number is {coin}.") # debug
+            # print(f"The coin number is {coin}.") # debug
             if coin == 0:
                 result_text = "The coin landed on its edge!"
                 result_color = Colour.gold()

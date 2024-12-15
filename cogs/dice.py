@@ -50,13 +50,21 @@ class Dice(commands.Cog, name="Dice"):
     @dice_cog_cooldown(seconds=5)
     async def coin_flip(self, interaction: Interaction, what_for: str = ''):
         try:
-            coin = rand.randint(0,1)
+            coin = rand.randint(0,999)
+            # print(f"The coint number is {coin}.") # debug
+            if coin == 0:
+                result_text = "The coin landed on its edge!"
+                result_color = Colour.gold()
+            else:
+                result_text = "Heads!" if coin % 2 == 0 else "Tails!"
+                result_color = Colour.red()
+
             # print("The coin number is", coin) # debug line
             embed = Embed(
                 title=f"{what_for} (Coin Flip)" if what_for != '' else "Coin Flip",
                 type='rich',
-                description=f"Heads!" if coin == 0 else f"Tails!",
-                color=Colour.red()
+                description=result_text,
+                color=result_color
             )
             await interaction.response.send_message(embed=embed)
         except Exception as e:
@@ -89,7 +97,7 @@ class Dice(commands.Cog, name="Dice"):
             embed = Embed(
                 title=f"{what_for} (d{max_roll})" if what_for != '' else f"d{max_roll} Roll",
                 type='rich',
-                description=f"**{rolled_number}**",
+                description=f"**{rolled_number:,}**",
                 color=embed_color
             )
             await interaction.response.send_message(embed=embed)
@@ -97,30 +105,39 @@ class Dice(commands.Cog, name="Dice"):
             print(e)
 
     @app_commands.command(name="advantage", description="Roll two d20 die and take the highest number!")
+    @app_commands.describe(dice="The dice you want to roll")
     @app_commands.describe(what_for="What are you rolling for?")
+    @app_commands.choices(dice=dice_choices)
     @app_commands.rename(what_for="for")
     @dice_cog_cooldown(seconds=5)
-    async def advantage(self, interaction: Interaction, what_for: str = ''):
+    async def advantage(self, interaction: Interaction, dice: str = "d20", what_for: str = ''):
+        max_roll: int = 0
+        if dice.startswith("d"):
+            max_roll = int(dice[1:])  # Extract number after 'd'
+        else:
+            await interaction.response.send_message("Invalid dice selection!", ephemeral=True)
+            return
+
         # Roll the two dice
-        roll1 = rand.randint(1,20)
-        roll2 = rand.randint(1,20)
+        roll1 = rand.randint(1,max_roll)
+        roll2 = rand.randint(1,max_roll)
         result = max(roll1, roll2)
 
         try:
-            if result == 20 or result in SPECIAL_NUMBERS:
+            if result == max_roll or result in SPECIAL_NUMBERS:
                 embed_color = Colour.gold()
             else:
                 embed_color = Colour.red()
     
             embed = Embed(
-                title=f"{what_for} (Advantage Roll)" if what_for != '' else f"Advantage Roll",
+                title=f"{what_for} (d{max_roll} Advantage Roll)" if what_for != '' else f"d{max_roll} Advantage Roll",
                 type='rich',
                 description=f"**Here are your rolls!**",
                 color=embed_color
             )
-            embed.add_field(name="First Roll", value=f"{roll1}", inline=False)
-            embed.add_field(name="Second Roll", value=f"{roll2}", inline=False)
-            embed.add_field(name="Result", value=f"Your result is {result}!", inline=False)
+            embed.add_field(name="First Roll", value=f"{roll1:,}", inline=False)
+            embed.add_field(name="Second Roll", value=f"{roll2:,}", inline=False)
+            embed.add_field(name="Result", value=f"Your result is {result:,}!", inline=False)
             
             await interaction.response.send_message(embed=embed)
         except Exception as e:

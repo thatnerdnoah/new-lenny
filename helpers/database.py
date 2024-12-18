@@ -88,3 +88,29 @@ def pull_backup():
         backup_numnber = doc.to_dict()['count_backup']
 
     return backup_numnber
+
+def letter_pull():
+    current_letter = 'a'
+    lives = 2
+
+    if not config.local_test:
+        doc_ref = db.collection(u'letter').document(u'letter')
+    else:
+        doc_ref = db.collection(u'letter').document(u'letter_test')
+
+    doc = doc_ref.get()
+    if doc.exists:
+        current_letter = doc.to_dict()['letter']
+        lives = doc.to_dict()['lives']
+
+    return current_letter, lives
+
+def letter_push(letter: str):
+    if not config.local_test:
+        doc_ref = db.collection(u'letter').document(u'letter')
+    else:
+        doc_ref = db.collection(u'letter').document(u'letter_test')
+
+    doc_ref.update({
+        u'letter': letter
+    })

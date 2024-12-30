@@ -112,5 +112,5 @@ def letter_push(letter: str):
         doc_ref = db.collection(u'letter').document(u'letter_test')
 
     doc_ref.update({
-        u'letter': letter
+        u'letter': f"{letter}"
     })

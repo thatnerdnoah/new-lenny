@@ -73,7 +73,9 @@ class Alphabet(commands.Cog, name="Alphabet"):
 
                             # Reset if we've reached the end of the alphabet
                             if self.current_index >= len(self.letters):
-                                await message.channel.send("Congratulations! You've completed the alphabet!")
+                                await message.channel.send(
+                                    f"Congratulations! You've completed the alphabet!"
+                                )
                                 await self.reset_game()
                         else:
                             self.lives -= 1

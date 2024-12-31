@@ -13,7 +13,7 @@ response_map = {
     111: lambda: {"file": File("./media/111.gif")},
     140: lambda: {"content": "MAX LAFF POINTS!"},
     222: lambda: {"file": File("./media/222.gif")},
-    305: lambda: {"content": "Dale???? Idk who dale is"},
+    # 305: lambda: {"content": "Dale???? Idk who dale is"},
     314: lambda: {"file": File("./media/314.gif")},
     321: lambda: {"file": File("./media/321.gif")},
     333: lambda: {"file": File("./media/333.gif")},

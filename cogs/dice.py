@@ -2,6 +2,7 @@ from discord import Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 import random as rand
 import time
+from datetime import datetime
 
 dice_options = [
     "d4", "d6", "d10", "d12", "d20", "d100", "d10000", "d1000000"
@@ -64,7 +65,8 @@ class Dice(commands.Cog, name="Dice"):
                 title=f"{what_for} (Coin Flip)" if what_for != '' else "Coin Flip",
                 type='rich',
                 description=result_text,
-                color=result_color
+                color=result_color,
+                timestamp=datetime.now()
             )
             await interaction.response.send_message(embed=embed)
         except Exception as e:
@@ -78,7 +80,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.rename(what_for="for")
     @app_commands.choices(dice=dice_choices)
     @dice_cog_cooldown(seconds=5)
-    async def roll_number(self, interaction: Interaction, dice: str, what_for: str = ''):
+    async def roll_number(self, interaction: Interaction, dice: str = "d20", what_for: str = ''):
         max_roll: int = 0
         if dice.startswith("d"):
             max_roll = int(dice[1:])  # Extract number after 'd'
@@ -98,7 +100,8 @@ class Dice(commands.Cog, name="Dice"):
                 title=f"{what_for} (d{max_roll})" if what_for != '' else f"d{max_roll} Roll",
                 type='rich',
                 description=f"**{rolled_number:,}**",
-                color=embed_color
+                color=embed_color,
+                timestamp=datetime.now()
             )
             await interaction.response.send_message(embed=embed)
         except Exception as e:

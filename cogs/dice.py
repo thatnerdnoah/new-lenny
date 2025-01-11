@@ -80,7 +80,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.rename(what_for="for")
     @app_commands.choices(dice=dice_choices)
     @dice_cog_cooldown(seconds=5)
-    async def roll_number(self, interaction: Interaction, dice: str, what_for: str = ''):
+    async def roll_number(self, interaction: Interaction, dice: str = "d20", what_for: str = ''):
         max_roll: int = 0
         if dice.startswith("d"):
             max_roll = int(dice[1:])  # Extract number after 'd'

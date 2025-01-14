@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 
 dice_options = [
-    "d4", "d6", "d10", "d12", "d20", "d100", "d10000", "d1000000"
+    "d20", "d100", "d4", "d6", "d10", "d12", "d10000", "d1000000"
 ]
 dice_choices = [app_commands.Choice(name=dice, value=dice) for dice in dice_options]
 dice_cog_cooldowns = {}
@@ -80,7 +80,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.rename(what_for="for")
     @app_commands.choices(dice=dice_choices)
     @dice_cog_cooldown(seconds=5)
-    async def roll_number(self, interaction: Interaction, dice: str = "d20", what_for: str = ''):
+    async def roll_number(self, interaction: Interaction, dice: str, what_for: str = ''):
         max_roll: int = 0
         if dice.startswith("d"):
             max_roll = int(dice[1:])  # Extract number after 'd'
@@ -113,7 +113,7 @@ class Dice(commands.Cog, name="Dice"):
     @app_commands.choices(dice=dice_choices)
     @app_commands.rename(what_for="for")
     @dice_cog_cooldown(seconds=5)
-    async def advantage(self, interaction: Interaction, dice: str = "d20", what_for: str = ''):
+    async def advantage(self, interaction: Interaction, dice: str, what_for: str = ''):
         max_roll: int = 0
         if dice.startswith("d"):
             max_roll = int(dice[1:])  # Extract number after 'd'

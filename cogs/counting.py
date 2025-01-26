@@ -132,7 +132,7 @@ class Counting(commands.Cog, name="Counting"):
                 timestamp=datetime.now()
             )
             embed.add_field(name="Lives", value=f"{self.lives}", inline=False)
-            embed.add_field(name="Next Number", value=f"{self.expected_number}", inline=False)
+            embed.add_field(name="Current record", value=f"{self.record}", inline=False)
 
             await interaction.followup.send(embed=embed)
         except Exception as e:

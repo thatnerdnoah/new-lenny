@@ -39,6 +39,24 @@ class CogManager(commands.Cog, name="CogManager"):
 
     @commands.Cog.listener()
     async def on_ready(self):
+        await self.initialize_cog()
+
+    async def cog_load(self):
+        await self.initialize_cog()
+
+    async def cog_unload(self):
+        print("Command Manager has been deactivated!")
+        print("Unloading pre-configred cogs...")
+        try:
+            for cog in config.cogs:
+                print(f"Unloading {cog}...")
+                await self.bot.unload_extension(cog)
+            print("All pre-configured cogs unloaded!")
+            await self.sync_commands()
+        except Exception as e:
+            print(e)
+
+    async def initialize_cog(self):
         print("Command Manager has been activated!")
         print("Loading pre-configured cogs...")
         try:

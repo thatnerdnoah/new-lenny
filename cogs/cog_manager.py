@@ -1,12 +1,34 @@
-import discord
 from discord.ext import commands
 from discord import app_commands, Interaction
+import time
 
 try:
     import config_local as config
     local_test = True
 except ImportError:
     import config
+
+command_cooldowns = {}
+
+def command_cooldown(seconds: int):
+    async def predicate(interaction: Interaction):
+        user_id = interaction.user.id
+        current_time = time.time()
+        
+        if user_id in command_cooldowns:
+            last_used = command_cooldowns[user_id]
+            if current_time - last_used < seconds:
+                cooldown_remaining = seconds - (current_time - last_used)
+                await interaction.response.send_message(
+                    f"You're on cooldown! Try again in {cooldown_remaining:.1f} seconds.",
+                    ephemeral=True
+                )
+                return False
+
+        command_cooldowns[user_id] = current_time
+        return True
+
+    return app_commands.check(predicate)
 
 class CogManager(commands.Cog, name="CogManager"):
     """

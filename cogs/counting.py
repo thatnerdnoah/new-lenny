@@ -2,6 +2,8 @@ from discord import TextChannel, Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 from helpers import database
 from media import meme
+from cogs.cog_manager import command_cooldown
+from datetime import datetime
 import asyncio
 
 local_test = False
@@ -117,6 +119,26 @@ class Counting(commands.Cog, name="Counting"):
             await interaction.response.send_message("Something went wrong!", ephemeral=True)
             print(f"Error: {e}")
 
+    @app_commands.command(name="status", description="Check on the status of the counting!")
+    @command_cooldown(seconds=10)
+    async def status_command(self, interaction: Interaction):
+        await interaction.response.defer()
+
+        try:
+            embed=Embed(
+                title="Counting Status",
+                type='rich',
+                color=Colour.purple(),
+                timestamp=datetime.now()
+            )
+            embed.add_field(name="Lives", value=f"{self.lives}", inline=False)
+            embed.add_field(name="Current record", value=f"{self.record}", inline=False)
+
+            await interaction.followup.send(embed=embed)
+        except Exception as e:
+            await interaction.followup.send("Oops! Something went wrong.")
+            print(e)
+    
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel == self.counting_channel:

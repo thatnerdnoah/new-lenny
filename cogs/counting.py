@@ -122,7 +122,7 @@ class Counting(commands.Cog, name="Counting"):
     @app_commands.command(name="status", description="Check on the status of the counting!")
     @command_cooldown(seconds=10)
     async def status_command(self, interaction: Interaction):
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer()
 
         try:
             embed=Embed(

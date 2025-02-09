@@ -191,6 +191,7 @@ class Counting(commands.Cog, name="Counting"):
                             await asyncio.sleep(0.1)
                             await message.add_reaction("❌")
                             await message.channel.send(f"<@{message.author.id}> cant count!")
+                            await message.channel.send(f"You've used all lives! The count has been reset.")
                         else:
                             self.lives -= 1
                             database.update_lives(self.lives)

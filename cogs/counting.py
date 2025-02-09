@@ -153,8 +153,8 @@ class Counting(commands.Cog, name="Counting"):
                                 await message.channel.send(f"Counting may continue at {self.expected_number}!")
                                 return
 
+                    self.last_messanger = message.author
                     if message_number == self.expected_number: 
-                        self.last_messanger = message.author
                         await meme.handle_number(message=message, number=self.expected_number)
                         
                         if self.expected_number == self.record + 1:

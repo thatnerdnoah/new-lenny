@@ -15,7 +15,7 @@ class Alphabet(commands.Cog, name="Alphabet"):
         self.bot: commands.Bot = bot
         self.counting_channel: TextChannel = None
         self.log_channel: TextChannel = None
-        self.letters = list(string.ascii_lowercase)
+        self.letters = None
         self.last_messanger = None
         self.expected_letter = 'a'
         self.current_index = 0
@@ -34,6 +34,10 @@ class Alphabet(commands.Cog, name="Alphabet"):
     def initialize(self):
         self.counting_channel = self.bot.get_channel(config.counting_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
+        self.letters = list(string.ascii_lowercase)
+        self.expected_letter = 'a'
+        self.current_index = 0
+        self.lives = 2
 
         print("Before database pull:", self.expected_letter, self.lives)
 

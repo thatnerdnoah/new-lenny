@@ -1,18 +1,15 @@
-from os import environ
+from dotenv import load_dotenv
+import os
 
-token = environ["DISCORD_TOKEN"]
-# admin_role = environ["MOD_ROLE"]
-mod_channel = int(environ["MOD_CHANNEL"])
-log_channel = int(environ["LOG_CHANNEL"])
-counting_channel = int(environ["COUNTING_CHANNEL"])
-dice_channel = 0
+load_dotenv()
+
+token = str(os.getenv("DISCORD_TOKEN"))
+mod_channel = int(os.getenv("MOD_CHANNEL"))
+log_channel = int(os.getenv("LOG_CHANNEL"))
+counting_channel = int(os.getenv("COUNTING_CHANNEL"))
 cogs = ["cogs.counting", "cogs.dice"]
-bot_id = 597109548104548390
-prefix = "$"
-project_id = environ["PROJECT_ID"]
-discord_name = "Snoop Troop"
-path_to_credential = str(environ["CRED_FILE"])
+bot_id = int(os.getenv("BOT_ID"))
+project_id = str(os.getenv("PROJECT_ID"))
+discord_name = str(os.getenv("DISCORD_NAME"))
+path_to_credential = str(os.getenv("CRED_FILE"))
 local_test = False
-
-# url = 'https://api.fortnitetracker.com/v1/store'
-# headers = {'TRN-Api-Key': f'{environ["FORTNITE_KEY"]}'}

@@ -4,3 +4,4 @@ helpers/*.json
 .DS_Store
 .vscode/
 venv
+.env

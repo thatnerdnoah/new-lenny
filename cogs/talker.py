@@ -16,7 +16,7 @@ class Talker(commands.Cog, name="Talker"):
     def initialize_cog(self):
         print("You can talk as me now! (Talker cog loaded)")
     
-    @app_commands(name="talker", description="Send a message in a channel as Lenny!")
+    @app_commands.command(name="talker", description="Send a message in a channel as Lenny!")
     @app_commands.describe(
         message="What would you like Lenny to say?",
         channel="What channel should Lenny message in?"
@@ -24,9 +24,6 @@ class Talker(commands.Cog, name="Talker"):
     @app_commands.default_permissions(administrator=True)
     @command_cooldown(seconds=5)
     async def send_message(self, interaction: Interaction, message: str, channel: TextChannel):
-        if not message:
-            await interaction.response.send_message("You need to send a message!", ephemeral=True)
-            return
         
         try:
             await channel.send(message)

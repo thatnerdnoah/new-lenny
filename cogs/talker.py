@@ -34,3 +34,5 @@ class Talker(commands.Cog, name="Talker"):
         except Exception as e:
             await interaction.response.send_message(f"❌ Failure to send message: {e}", ephemeral=True)
 
+async def setup(bot):
+    await bot.add_cog(Counting(bot)) 

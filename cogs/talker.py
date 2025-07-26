@@ -27,7 +27,7 @@ class Talker(commands.Cog, name="Talker"):
         
         try:
             await channel.send(message)
-            await interaction.response.send_message(f"✅ Message has been sent!")
+            await interaction.response.send_message(f"✅ Message has been sent!", ephemeral=True)
         except Exception as e:
             await interaction.response.send_message(f"❌ Failure to send message: {e}", ephemeral=True)
 

@@ -35,4 +35,4 @@ class Talker(commands.Cog, name="Talker"):
             await interaction.response.send_message(f"❌ Failure to send message: {e}", ephemeral=True)
 
 async def setup(bot):
-    await bot.add_cog(Counting(bot)) 
+    await bot.add_cog(Talker(bot)) 

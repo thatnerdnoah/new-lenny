@@ -1,4 +1,4 @@
-from discord import app_commands, Interaction, TextChannel
+from discord import TextChannel, Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 from cogs.cog_manager import command_cooldown
 
@@ -34,5 +34,5 @@ class Talker(commands.Cog, name="Talker"):
         except Exception as e:
             await interaction.response.send_message(f"❌ Failure to send message: {e}", ephemeral=True)
 
-async def setup(bot):
-    await bot.add_cog(Talker(bot)) 
+async def setup(client):
+    await client.add_cog(Talker(client))

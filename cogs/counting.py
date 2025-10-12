@@ -62,6 +62,7 @@ class Counting(commands.Cog, name="Counting"):
         
         print("Command sent to set current number to", number_to_set)
         self.expected_number = number_to_set
+        self.last_messanger = None
         database.database_push(self.expected_number)
         await interaction.response.send_message(f"Counting's next number has been set to {self.expected_number}!", ephemeral=True)
 

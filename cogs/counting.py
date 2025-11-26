@@ -29,9 +29,9 @@ class Counting(commands.Cog, name="Counting"):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.initialize_cog()
+        await self.initialize_cog()
 
-    def initialize_cog(self):
+    async def initialize_cog(self):
         await telemetry.load()
         self.counting_channel = self.bot.get_channel(config.counting_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)

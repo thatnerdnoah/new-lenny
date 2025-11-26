@@ -32,7 +32,7 @@ class Counting(commands.Cog, name="Counting"):
         self.initialize_cog()
 
     def initialize_cog(self):
-        telemetry.load()
+        await telemetry.load()
         self.counting_channel = self.bot.get_channel(config.counting_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
 
@@ -142,7 +142,7 @@ class Counting(commands.Cog, name="Counting"):
         if message.channel == self.counting_channel:
             if message.author != self.bot.user:
                 try:
-                    telemetry.inc_generated()
+                    await telemetry.inc_generated()
                     message_number = int(message.content)
                     if message.author == self.last_messanger:
                             await asyncio.sleep(0.1)
@@ -154,7 +154,7 @@ class Counting(commands.Cog, name="Counting"):
                     self.last_messanger = message.author
                     if message_number == self.expected_number: 
                         await meme.handle_number(message=message, number=self.expected_number)
-                        telemetry.inc_success()
+                        await telemetry.inc_success()
                         if self.expected_number == self.record + 1:
                             await message.channel.send("You broke the record!")
                         
@@ -163,7 +163,7 @@ class Counting(commands.Cog, name="Counting"):
                         await asyncio.sleep(0.1)
                         await message.add_reaction("✅")
                     else:
-                        telemetry.inc_fail()
+                        await telemetry.inc_fail()
                         if self.lives <= 1:
                             # Embed log
                             embed = Embed(

@@ -43,6 +43,15 @@ class Telemetry:
             # On corruption: recreate
             await self._write_new()
 
+    async def _write_new(self):
+        """Create a new telemetry.json with today's date and zeroed counters."""
+        self.date = str(date.today())
+        self.generated = 0
+        self.success = 0
+        self.fail = 0
+
+        await self.save()
+    
     async def reset(self):
         """Reset counters for new day."""
         self.date = str(date.today())

@@ -1,12 +1,14 @@
 from discord import TextChannel, Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 from helpers import database
-from helpers.telemetry import Telemetry
+from helpers import telemetry
 from media import meme
 from cogs.cog_manager import command_cooldown
 from datetime import datetime
 import asyncio
 import config
+
+telemetry = telemetry.Telemetry()
 
 class Counting(commands.Cog, name="Counting"):
     def __init__(self, bot) -> None:

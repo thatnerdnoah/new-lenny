@@ -22,7 +22,7 @@ class Counting(commands.Cog, name="Counting"):
         self.lives = 3
 
     async def cog_load(self) -> None:
-        self.initialize_cog()
+        await self.initialize_cog()
 
     async def cog_unload(self) -> None:
         self.bot.remove_listener(self.on_message)

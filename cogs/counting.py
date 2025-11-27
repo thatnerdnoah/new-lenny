@@ -142,7 +142,6 @@ class Counting(commands.Cog, name="Counting"):
         if message.channel == self.counting_channel:
             if message.author != self.bot.user:
                 try:
-                    telemetry.update(telemetry.generated + 1)
                     message_number = int(message.content)
                     if message.author == self.last_messanger:
                             await asyncio.sleep(0.1)
@@ -153,6 +152,7 @@ class Counting(commands.Cog, name="Counting"):
 
                     self.last_messanger = message.author
                     if message_number == self.expected_number: 
+                        telemetry.update(telemetry.generated + 1)
                         await meme.handle_number(message=message, number=self.expected_number)
                         telemetry.update(telemetry.success + 1, "success")
                         if self.expected_number == self.record + 1:

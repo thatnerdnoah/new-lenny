@@ -4,9 +4,6 @@ from firebase_admin import firestore
 import config
 import datetime
 
-cred = credentials.Certificate(config.path_to_credential)
-firebase_admin.initialize_app(cred)
-
 db = firestore.client()
 
 class Telemetry:

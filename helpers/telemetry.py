@@ -1,95 +1,44 @@
-# Code was created with AI assistance.
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+import config
+import datetime
 
-import json
-import os
-from datetime import date
-from asyncio import Lock
-import aiofiles
-import aiofiles.os
+cred = credentials.Certificate(config.path_to_credential)
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 class Telemetry:
     def __init__(self, path="telemetry.json"):
         self.path = path
-        self.lock = Lock()
-        self.date = str(date.today())
-        self.generated = 0
-        self.success = 0
-        self.fail = 0
+        self.date = str(datetime.date.today())
+        self.generated: int = 0
+        self.success: int = 0
+        self.fail: int = 0
 
-    async def load(self):
-        """Load telemetry from disk or create new if missing/corrupt."""
-        if not os.path.exists(self.path):
-            await self._write_new()
-            return
+    def pull_numbers(self):
+        doc_ref = db.collection(u'telemetry').document(u'count_track')
 
-        try:
-            async with aiofiles.open(self.path, "r") as f:
-                data = json.loads(await f.read())
+        doc = doc_ref.get()
+        if doc.exists:
+            self.generated = doc.to_dict()['generated']
+            self.success = doc.to_dict()['success']
+            self.fail = doc.to_dict()['fail']
 
-            # Validate minimal expected structure
-            if "date" not in data:
-                raise ValueError("Invalid telemetry schema")
+    def update(self, num, field: str = "generated"):
+        doc_ref = db.collection(u'telemetry').document(u'count_track')
 
-            self.date = data["date"]
-            self.generated = data.get("generated", 0)
-            self.success = data.get("success", 0)
-            self.fail = data.get("fail", 0)
+        doc_ref.update({
+            field: num
+        })
 
-            # Reset if old date
-            if self.date != str(date.today()):
-                await self.reset()
-
-        except Exception:
-            # On corruption: recreate
-            await self._write_new()
-
-    async def _write_new(self):
-        """Create a new telemetry.json with today's date and zeroed counters."""
-        self.date = str(date.today())
-        self.generated = 0
-        self.success = 0
-        self.fail = 0
-
-        await self.save()
-    
-    async def reset(self):
-        """Reset counters for new day."""
-        self.date = str(date.today())
-        self.generated = 0
-        self.success = 0
-        self.fail = 0
-        await self.save()
-
-    async def save(self):
-        """Atomic write to avoid corruption."""
-        async with self.lock:
-            tmp_path = self.path + ".tmp"
-            async with aiofiles.open(tmp_path, "w") as f:
-                await f.write(json.dumps({
-                    "date": self.date,
-                    "generated": self.generated,
-                    "success": self.success,
-                    "fail": self.fail
-                }, indent=4))
-
-            # Replace original atomically
-            await aiofiles.os.replace(tmp_path, self.path)
-
-    # Increment methods
-    async def inc_generated(self):
-        await self._increment("generated")
-
-    async def inc_success(self):
-        await self._increment("success")
-
-    async def inc_fail(self):
-        await self._increment("fail")
-
-    async def _increment(self, field):
-        async with self.lock:
-            # Reset if date rolled over
-            if self.date != str(date.today()):
-                await self.reset()
-
-            setattr(self, field, getattr(self, field) + 1)
-            await self.save()
+        if field == "success":
+            self.generated += 1
+            self.success += 1
+        elif field == "fail":
+            self.generated += 1
+            self.fail += 1
+        else:
+            self.generated += 1
+            

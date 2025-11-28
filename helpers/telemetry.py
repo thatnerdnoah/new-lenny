@@ -31,10 +31,8 @@ class Telemetry:
         })
 
         if field == "success":
-            self.generated += 1
             self.success += 1
         elif field == "fail":
-            self.generated += 1
             self.fail += 1
         else:
             self.generated += 1

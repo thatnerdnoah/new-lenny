@@ -1,18 +1,14 @@
 from discord import TextChannel, Embed, Colour, app_commands, Interaction
 from discord.ext import commands
 from helpers import database
+from helpers import telemetry
 from media import meme
 from cogs.cog_manager import command_cooldown
 from datetime import datetime
 import asyncio
+import config
 
-local_test = False
-
-try:
-    import config_local as config
-    local_test = True
-except ImportError:
-    import config
+telemetry = telemetry.Telemetry()
 
 class Counting(commands.Cog, name="Counting"):
     def __init__(self, bot) -> None:
@@ -24,18 +20,19 @@ class Counting(commands.Cog, name="Counting"):
         self.expected_number = 1
         self.record = 0
         self.lives = 3
-        
+
     async def cog_load(self) -> None:
-        self.initialize_cog()
+        await self.initialize_cog()
 
     async def cog_unload(self) -> None:
         self.bot.remove_listener(self.on_message)
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.initialize_cog()
+        await self.initialize_cog()
 
-    def initialize_cog(self):
+    async def initialize_cog(self):
+        telemetry.pull_numbers()
         self.counting_channel = self.bot.get_channel(config.counting_channel)
         self.log_channel = self.bot.get_channel(config.log_channel)
 
@@ -146,18 +143,19 @@ class Counting(commands.Cog, name="Counting"):
             if message.author != self.bot.user:
                 try:
                     message_number = int(message.content)
-                    if not local_test:
-                        if message.author == self.last_messanger:
-                                await asyncio.sleep(0.1)
-                                await message.add_reaction("❌")
-                                await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
-                                await message.channel.send(f"Counting may continue at {self.expected_number}!")
-                                return
+                    if message.author == self.last_messanger:
+                        telemetry.update(telemetry.generated + 1)
+                        await asyncio.sleep(0.1)
+                        await message.add_reaction("❌")
+                        await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
+                        await message.channel.send(f"Counting may continue at {self.expected_number}!")
+                        return
 
                     self.last_messanger = message.author
                     if message_number == self.expected_number: 
+                        telemetry.update(telemetry.generated + 1)
+                        telemetry.update(telemetry.success + 1, "success")
                         await meme.handle_number(message=message, number=self.expected_number)
-                        
                         if self.expected_number == self.record + 1:
                             await message.channel.send("You broke the record!")
                         
@@ -166,6 +164,7 @@ class Counting(commands.Cog, name="Counting"):
                         await asyncio.sleep(0.1)
                         await message.add_reaction("✅")
                     else:
+                        telemetry.update(telemetry.fail + 1, "fail")
                         if self.lives <= 1:
                             # Embed log
                             embed = Embed(

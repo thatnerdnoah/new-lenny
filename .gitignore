@@ -5,3 +5,4 @@ helpers/*.json
 .vscode/
 venv
 .env
+helpers/telemetry.py.bk

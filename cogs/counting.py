@@ -144,17 +144,18 @@ class Counting(commands.Cog, name="Counting"):
                 try:
                     message_number = int(message.content)
                     if message.author == self.last_messanger:
-                            await asyncio.sleep(0.1)
-                            await message.add_reaction("❌")
-                            await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
-                            await message.channel.send(f"Counting may continue at {self.expected_number}!")
-                            return
+                        telemetry.update(telemetry.generated + 1)
+                        await asyncio.sleep(0.1)
+                        await message.add_reaction("❌")
+                        await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
+                        await message.channel.send(f"Counting may continue at {self.expected_number}!")
+                        return
 
                     self.last_messanger = message.author
                     if message_number == self.expected_number: 
                         telemetry.update(telemetry.generated + 1)
-                        await meme.handle_number(message=message, number=self.expected_number)
                         telemetry.update(telemetry.success + 1, "success")
+                        await meme.handle_number(message=message, number=self.expected_number)
                         if self.expected_number == self.record + 1:
                             await message.channel.send("You broke the record!")
                         

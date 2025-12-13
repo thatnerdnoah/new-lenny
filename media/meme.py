@@ -8,6 +8,7 @@ response_map = {
     25: lambda: {"file": File("./media/25.gif")},
     42: lambda: {"content": "the meaning of life"},
     66: lambda: {"file": File("./media/66.gif")},
+    67: lambda: {"file": File("./media/67.gif")},
     69: lambda: {"content": "nice", "file": File("./media/69.gif")},
     100: lambda: {"file": File("./media/100.gif")},
     111: lambda: {"file": File("./media/111.gif")},

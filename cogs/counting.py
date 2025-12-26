@@ -181,6 +181,25 @@ class Counting(commands.Cog, name="Counting"):
                                 self.record = self.expected_number
                                 database.update_record(self.record)
 
+                            # reset telemetry after count fails completely
+                            telemetryEmbed = Embed (
+                                title="Telemetry Reset for Counting",
+                                type='rich',
+                                colour=Colour.purple()
+                            )
+
+                            telemetryEmbed.add_field(name="Generated", value=telemetry.generated, inline=False)
+                            telemetryEmbed.add_field(name="Success", value=telemetry.success, inline=False)
+                            telemetryEmbed.add_field(name="Fail", value=telemetry.fail, inline=False)
+                            await self.log_channel.send(embed=telemetryEmbed)
+
+                            telemetry.generated = 0
+                            telemetry.success = 0
+                            telemetry.fail = 0 
+                            telemetry.update(0, "generated")
+                            telemetry.update(0, "success")
+                            telemetry.update(0, "fail")
+
                             # reset the counter
                             database.database_copy(self.expected_number)
                             self.expected_number = 1

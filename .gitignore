@@ -6,3 +6,4 @@ helpers/*.json
 venv
 .env
 helpers/telemetry.py.bk
+compose.yaml

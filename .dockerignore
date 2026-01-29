@@ -8,3 +8,5 @@ venv/
 .ropeproject/
 compose.yaml
 helpers/*.json
+*.json
+image-files/

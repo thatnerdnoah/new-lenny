@@ -7,3 +7,5 @@ venv
 .env
 helpers/telemetry.py.bk
 compose.yaml
+image-files/
+*.json

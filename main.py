@@ -3,11 +3,7 @@ import signal
 import sys
 from discord import Game, Intents, app_commands, Interaction
 from discord.ext.commands import Bot
-
-try:
-    import config_local as config
-except ImportError:
-    import config
+import config
 
 intents = Intents.default()
 intents.message_content = True

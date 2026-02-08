@@ -71,5 +71,5 @@ class Counter(commands.Cog):
         del self.counters[channel_id][name]
         await ctx.send(f"Counter '{name}' has been deleted.")   
 
-def setup(bot):
-    bot.add_cog(Counter(bot))
+async def setup(bot):
+    await bot.add_cog(Counter(bot))   

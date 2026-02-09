@@ -41,10 +41,7 @@ discord_name = get_env("DISCORD_NAME")
 path_to_credential = get_env("CRED_FILE")
 
 # ⚙️ Bot configuration
-cogs = [
-    "cogs.counting",
-    "cogs.dice",
-]
+cogs = os.getenv("COGS", "").split(",")
 
 # 🧪 Environment flag
 local_test = get_env("LOCAL_TEST", default="false").lower() == "true"

@@ -10,7 +10,7 @@ class Counter(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.counters = {}  # Dictionary to store counters for each channel
-        
+
     # TODO: Experiment with button functionality for incrementing/decrementing counters without needing to type commands
     
     async def cog_load(self) -> None:
@@ -27,7 +27,7 @@ class Counter(commands.Cog):
     @app_commands.describe(name='The name of the counter to create.')
     async def create_counter(self, interaction: Interaction, name: str):
         """Creates a new counter with the given name."""
-        channel_id = interaction.channel
+        channel_id = interaction.channel_id
         if channel_id not in self.counters:
             self.counters[channel_id] = {}
         if name in self.counters[channel_id]:
@@ -79,6 +79,17 @@ class Counter(commands.Cog):
             return
         current_value = self.counters[channel_id][name]
         await interaction.response.send_message(f"Counter '{name}' current value: {current_value}")
+
+    # Debug tool
+    @app_commands.command(name='clearcounters', description='Clears all counters in the current channel.')
+    async def clear_counters(self, interaction: Interaction):
+        """Clears all counters in the current channel."""
+        channel_id = interaction.channel_id
+        if channel_id in self.counters:
+            self.counters[channel_id] = {}
+            await interaction.response.send_message("All counters in this channel have been cleared.")
+        else:
+            await interaction.response.send_message("No counters found in this channel to clear.")
        
 
 async def setup(bot):

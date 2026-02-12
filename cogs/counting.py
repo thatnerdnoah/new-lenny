@@ -6,6 +6,7 @@ from media import meme
 from cogs.cog_manager import command_cooldown
 from datetime import datetime
 import asyncio
+import time
 import config
 
 telemetry = telemetry.Telemetry()
@@ -138,6 +139,33 @@ class Counting(commands.Cog, name="Counting"):
             print(e)
     
     @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        if before.channel == self.counting_channel and before.author != self.bot.user:
+            try:
+                message_number = int(after.content)
+                if message_number == self.expected_number - 1:
+                    await after.add_reaction("❌")
+                    await after.channel.send(f"You cannot edit your message to change the count, <@{after.author.id}>!")
+                    await after.channel.send(f"Counting may continue at {self.expected_number}!")
+            except Exception:
+                return
+        else: 
+            return
+        
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        if message.channel == self.counting_channel and message.author != self.bot.user:
+            try:
+                message_number = int(message.content)
+                if message_number == self.expected_number - 1:
+                    await message.channel.send(f"You cannot delete your message to change the count, <@{message.author.id}>!")
+                    await message.channel.send(f"Counting may continue at {self.expected_number}!")
+            except Exception:
+                return
+        else: 
+            return
+    
+    @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel == self.counting_channel:
             if message.author != self.bot.user:
@@ -145,7 +173,7 @@ class Counting(commands.Cog, name="Counting"):
                     message_number = int(message.content)
                     if message.author == self.last_messanger:
                         telemetry.update(telemetry.generated + 1)
-                        await asyncio.sleep(0.1)
+                        time.sleep(1)
                         await message.add_reaction("❌")
                         await message.channel.send(f"You cannot go twice in a row, <@{message.author.id}>!")
                         await message.channel.send(f"Counting may continue at {self.expected_number}!")
@@ -155,14 +183,13 @@ class Counting(commands.Cog, name="Counting"):
                     if message_number == self.expected_number: 
                         telemetry.update(telemetry.generated + 1)
                         telemetry.update(telemetry.success + 1, "success")
+                        time.sleep(1)  
+                        await message.add_reaction("✅")
                         await meme.handle_number(message=message, number=self.expected_number)
                         if self.expected_number == self.record + 1:
                             await message.channel.send("You broke the record!")
-                        
                         self.expected_number += 1
                         database.database_push(self.expected_number)
-                        await asyncio.sleep(0.1)
-                        await message.add_reaction("✅")
                     else:
                         telemetry.update(telemetry.fail + 1, "fail")
                         if self.lives <= 1:
@@ -207,7 +234,7 @@ class Counting(commands.Cog, name="Counting"):
                             self.last_messanger = None
                             self.lives = 3
                             database.update_lives(self.lives)
-                            await asyncio.sleep(0.1)
+                            time.sleep(1)
                             await message.add_reaction("❌")
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                             await message.channel.send(f"You've used all lives! The count has been reset.")
@@ -225,7 +252,7 @@ class Counting(commands.Cog, name="Counting"):
                             embed.add_field(name="Number of lives left", value=self.lives, inline=False)
                             await self.log_channel.send(embed=embed)
 
-                            await asyncio.sleep(0.1)
+                            time.sleep(1)  
                             await message.add_reaction("❌")
                             await message.channel.send(f"<@{message.author.id}> cant count!")
                             if self.lives == 1:

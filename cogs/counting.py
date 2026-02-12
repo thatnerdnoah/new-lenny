@@ -183,13 +183,13 @@ class Counting(commands.Cog, name="Counting"):
                     if message_number == self.expected_number: 
                         telemetry.update(telemetry.generated + 1)
                         telemetry.update(telemetry.success + 1, "success")
-                        self.expected_number += 1
-                        database.database_push(self.expected_number)
                         time.sleep(1)  
                         await message.add_reaction("✅")
                         await meme.handle_number(message=message, number=self.expected_number)
                         if self.expected_number == self.record + 1:
                             await message.channel.send("You broke the record!")
+                        self.expected_number += 1
+                        database.database_push(self.expected_number)
                     else:
                         telemetry.update(telemetry.fail + 1, "fail")
                         if self.lives <= 1:

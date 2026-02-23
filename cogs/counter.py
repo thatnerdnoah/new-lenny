@@ -21,27 +21,30 @@ class CounterButtonView(discord.ui.View):
         self.name = name
 
     def value(self) -> int:
-        return self.counters[self.channel_id][self.name]
+        return self.counters[self.channel_id][self.name].value
+
+    def description(self) -> str:
+        return self.counters[self.channel_id][self.name].description
 
     async def update(self, interaction: Interaction):
         await interaction.response.edit_message(
-            content=f"📊 **Counter `{self.name}`**\nCurrent value: **{self.value()}**",
+            content = f"📊 **Counter {self.name}**\n{self.description() or 'Current Value'}: **{self.value()}**",
             view=self
         )
 
     @discord.ui.button(label="+1", style=discord.ButtonStyle.success)
     async def increment(self, interaction: Interaction, button: discord.ui.Button):
-        self.counters[self.channel_id][self.name] += 1
+        self.counters[self.channel_id][self.name].value += 1
         await self.update(interaction)
 
     @discord.ui.button(label="-1", style=discord.ButtonStyle.danger)
     async def decrement(self, interaction: Interaction, button: discord.ui.Button):
-        self.counters[self.channel_id][self.name] -= 1
+        self.counters[self.channel_id][self.name].value -= 1
         await self.update(interaction)
 
     @discord.ui.button(label="Reset", style=discord.ButtonStyle.secondary)
     async def reset(self, interaction: Interaction, button: discord.ui.Button):
-        self.counters[self.channel_id][self.name] = 0
+        self.counters[self.channel_id][self.name].value = 0
         await self.update(interaction)
 
 
@@ -89,7 +92,6 @@ class CounterCog(commands.Cog):
         self.counters[channel_id][name].value = 0
         await interaction.response.send_message(f"Counter '{name}' has been reset to 0.")
 
-
     @app_commands.command(
         name="displaycounter",
         description="Display buttons for incrementing or decrementing a counter."
@@ -108,7 +110,7 @@ class CounterCog(commands.Cog):
         view = CounterButtonView(self.counters, channel_id, name)
 
         await interaction.response.send_message(
-            content=f"📊 **Counter `{name}`**\nCurrent value: **{self.counters[channel_id][name].name}**",
+            content = f"📊 **Counter {name}**\n{self.counters[channel_id][name].description or 'Current value'}: **{self.counters[channel_id][name].value}**",
             view=view
         )
        

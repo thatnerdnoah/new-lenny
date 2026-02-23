@@ -6,7 +6,7 @@ from datetime import datetime
 
 import discord
     
- class Counter():
+class Counter():
     """A simple counter class to manage individual counters."""
     def __init__(self, name: str, value: int = 0, description: str = ""):
         self.name = name

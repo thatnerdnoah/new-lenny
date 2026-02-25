@@ -46,6 +46,15 @@ class CounterButtonView(discord.ui.View):
     async def reset(self, interaction: Interaction, button: discord.ui.Button):
         self.counters[self.channel_id][self.name].value = 0
         await self.update(interaction)
+    
+    @discord.ui.button(label="Finish", style=discord.ButtonStyle.primary)
+    async def finish(self, interaction: Interaction, button: discord.ui.Button):
+        channel_text = f"📊 **Counter {self.name} has been completed.**"
+        direct_text = f"📊 **Counter {self.name}**\n{self.description() or 'Final Value'}: **{self.value()}**"
+        await interaction.response.edit_message(content=channel_text, view=None)
+        await interaction.user.send(direct_text)
+        # Delete the counter from the dictionary
+        del self.counters[self.channel_id][self.name]
 
 
 class CounterCog(commands.Cog):

@@ -3,14 +3,14 @@ import os
 
 load_dotenv()
 
-def get_env(name: str, *, required: bool = False, default=None) -> str | None:
+def get_env(name: str, *, required: bool = False, default=None) -> str:
     value = os.getenv(name, default)
     if required and value is None:
         raise ValueError(f"Missing required environment variable: {name}")
     return value
 
 
-def get_int_env(name: str, *, required: bool = False, default=None) -> int | None:
+def get_int_env(name: str, *, required: bool = False, default=None) -> int:
     value = os.getenv(name, default)
     if value is None:
         if required:

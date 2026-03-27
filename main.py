@@ -3,6 +3,7 @@ import signal
 import sys
 from discord import Game, Intents, app_commands, Interaction
 from discord.ext.commands import Bot
+from helpers.leader import try_acquire_lock, refresh_lock
 import config
 
 intents = Intents.default()
@@ -31,17 +32,6 @@ async def sync(ctx):
     # await interaction.response.send_message(f"Synced {len(synced)} command(s)!")
     await ctx.message.add_reaction('✅')
 
-# async def shutdown()
-#     print(f"Shutting down {bot.user.name}...")
-#     await bot.close()
-#     await asyncio.sleep(1)
-#     sys.exit(0)
-
-# def handle_signals():
-#     loop = asyncio.get_event_loop()
-
-#     for sig in (signal.SIGINT, signal.SIGTERM):
-#         loop.add_signal_handler(sig, lambda: asyncio.ensure_future(shutdown()))
 
 async def main():
     async with bot:
@@ -49,6 +39,4 @@ async def main():
         await bot.start(config.token)
 
 if __name__ == "__main__":
-    # handle_signals()
-    
     asyncio.run(main())

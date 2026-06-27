@@ -8,13 +8,10 @@ response_map = {
     25: lambda: {"file": File("./media/25.gif")},
     42: lambda: {"content": "the meaning of life"},
     66: lambda: {"file": File("./media/66.gif")},
-    67: lambda: {"file": File("./media/67.gif")},
-    69: lambda: {"content": "nice", "file": File("./media/69.gif")},
     100: lambda: {"file": File("./media/100.gif")},
     111: lambda: {"file": File("./media/111.gif")},
     140: lambda: {"content": "MAX LAFF POINTS!"},
     222: lambda: {"file": File("./media/222.gif")},
-    # 305: lambda: {"content": "Dale???? Idk who dale is"},
     314: lambda: {"file": File("./media/314.gif")},
     321: lambda: {"file": File("./media/321.gif")},
     333: lambda: {"file": File("./media/333.gif")},
@@ -22,6 +19,11 @@ response_map = {
     420: lambda: {"content": "BLAZE IT!", "file": File("./media/420.gif")},
     444: lambda: {"content": "I love my Wendy's 444!", "file": File("./media/444.gif")},
     777: lambda: {"file": File("./media/777.gif")},
+}
+
+suffix_map = {
+    "67": lambda: {"file": File("./media/67.gif")},
+    "69": lambda: {"content": "nice", "file": File("./media/69.gif")},
 }
 
 # Special cases
@@ -40,14 +42,26 @@ special_cases = {
 
 # Main handler function
 async def handle_number(number, message):
+    number = int(number)
+    num_str = str(number)
+
+
     if number in special_cases:
         response = special_cases[number]()
     elif number in response_map:
         response = response_map[number]()
     else:
-        return  # No action for unhandled numbers
+        response = None
 
-    # Send the message
+        for suffix, handler in suffix_map.items():
+            if num_str.endswith(suffix):
+                response = handler()
+                break
+
+        if response is None:
+            return
+
+    # send
     if "content" in response and "file" in response:
         await message.channel.send(response["content"], file=response["file"])
     elif "content" in response:
